@@ -60,10 +60,10 @@
   }
   .nav-logo span { color: var(--accent); }
   .nav-cta {
-    display: inline-flex; align-items: center; gap: 8px;
+    display: inline-flex; align-items: center; gap: 6px;
     background: var(--ink); color: #fff;
-    font-family: var(--font-body); font-size: 13px; font-weight: 500;
-    padding: 8px 18px; border-radius: 40px;
+    font-family: var(--font-body); font-size: 12px; font-weight: 400;
+    padding: 6px 14px; border-radius: 30px;
     text-decoration: none; transition: background 0.2s var(--ease);
   }
   .nav-cta:hover { background: var(--accent); }
@@ -1159,6 +1159,8 @@
 <div class="toast" id="toast"></div>
 
 <script>
+  console.log('SCRIPT LOADED');
+  
   let current = 1;
   const total = 6;
 
@@ -1280,11 +1282,11 @@
     if (!isOpen) item.classList.add('open');
   }
 
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
+  const spinStyle = document.createElement('style');
+  spinStyle.textContent = '@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';
+  document.head.appendChild(spinStyle);
 
+  function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
     t.classList.add('show');
