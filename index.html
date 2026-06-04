@@ -3,651 +3,569 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/png" href="/favicon.png">
 <title>Audit IA — Analyse gratuite de votre landing page par un expert</title>
 <meta name="description" content="Un expert humain assisté par l'IA analyse votre landing page en profondeur — copywriting, UX, conversion, positionnement. Gratuit. Ouvert à tous les fondateurs." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0a0a0f;
+  --ink-muted:#52525f;
+  --ink-faint:#9898a8;
+  --surface:#f8f7f5;
+  --surface-2:#f0ede8;
+  --surface-3:#e4dfd7;
+  --accent:#c8522a;
+  --accent-light:#f5ede8;
+  --accent-dark:#9e3d1c;
+  --ai:#5b4fcf;
+  --ai-light:#eeedfb;
+  --ai-dark:#3d3499;
+  --glow-accent:rgba(200,82,42,0.15);
+  --glow-ai:rgba(91,79,207,0.12);
+  --border:rgba(10,10,15,0.08);
+  --border-strong:rgba(10,10,15,0.16);
+  --radius:6px;
+  --radius-lg:16px;
+  --radius-xl:24px;
+  --font-display:'Instrument Serif',serif;
+  --font-body:'DM Sans',sans-serif;
+  --ease:cubic-bezier(0.4,0,0.2,1);
+  --ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--surface);color:var(--ink);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
-  :root {
-    --ink: #0e0e0e;
-    --ink-muted: #5a5a5a;
-    --ink-faint: #9a9a9a;
-    --surface: #faf9f7;
-    --surface-2: #f0ede8;
-    --surface-3: #e8e3db;
-    --accent: #c8522a;
-    --accent-light: #f5ede8;
-    --accent-dark: #9e3d1c;
-    --ai: #5b4fcf;
-    --ai-light: #eeedfb;
-    --ai-dark: #3d3499;
-    --border: rgba(14,14,14,0.1);
-    --border-strong: rgba(14,14,14,0.2);
-    --radius: 4px;
-    --radius-lg: 12px;
-    --font-display: 'Instrument Serif', serif;
-    --font-body: 'DM Sans', sans-serif;
-    --ease: cubic-bezier(0.4, 0, 0.2, 1);
-  }
+/* ── CANVAS BACKGROUND ── */
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.6}
 
-  html { scroll-behavior: smooth; }
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2.5rem;height:64px;
+  background:rgba(248,247,245,0.75);
+  backdrop-filter:blur(20px) saturate(1.4);
+  -webkit-backdrop-filter:blur(20px) saturate(1.4);
+  border-bottom:1px solid var(--border);
+  transition:background 0.3s var(--ease);
+}
+nav.scrolled{background:rgba(248,247,245,0.96)}
+.nav-logo-img{height:32px;width:auto;display:block}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(91,79,207,0.08);color:var(--ai);
+  font-size:12px;font-weight:500;letter-spacing:0.04em;
+  padding:4px 12px;border-radius:40px;
+  border:1px solid rgba(91,79,207,0.15);
+}
+.nav-pill::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--ai);animation:pulse 2s infinite}
+.nav-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--ink);color:#fff;
+  font-family:var(--font-body);font-size:13px;font-weight:500;
+  padding:8px 18px;border-radius:40px;
+  text-decoration:none;transition:all 0.2s var(--ease);
+  box-shadow:0 2px 12px rgba(10,10,15,0.2);
+}
+.nav-cta:hover{background:var(--accent);transform:translateY(-1px);box-shadow:0 4px 20px rgba(200,82,42,0.3)}
 
-  body {
-    font-family: var(--font-body);
-    background: var(--surface);
-    color: var(--ink);
-    font-size: 16px;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:120px 2rem 80px;text-align:center;
+  position:relative;overflow:hidden;z-index:1;
+}
+.hero-glow{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 15% 35%,rgba(200,82,42,0.07) 0%,transparent 65%),
+    radial-gradient(ellipse 60% 70% at 85% 65%,rgba(91,79,207,0.07) 0%,transparent 65%),
+    radial-gradient(ellipse 40% 40% at 50% 50%,rgba(200,82,42,0.04) 0%,transparent 60%);
+  pointer-events:none;
+}
+.hero-grid-lines{
+  position:absolute;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(10,10,15,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(10,10,15,0.03) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.9);
+  color:var(--ink-muted);
+  font-size:12px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;
+  padding:6px 16px;border-radius:40px;
+  border:1px solid var(--border-strong);
+  margin-bottom:2rem;position:relative;z-index:1;
+  animation:fadeUp 0.7s var(--ease) both;
+  box-shadow:0 2px 16px rgba(10,10,15,0.06);
+  backdrop-filter:blur(8px);
+}
+.badge-dot{
+  display:flex;align-items:center;gap:4px;
+}
+.badge-dot-inner{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+.badge-sep{width:1px;height:12px;background:var(--border-strong)}
+.badge-ai{color:var(--ai);font-weight:500}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.7)}}
+.hero h1{
+  font-family:var(--font-display);
+  font-size:clamp(44px,7.5vw,96px);
+  line-height:1.03;letter-spacing:-0.035em;
+  color:var(--ink);max-width:960px;
+  position:relative;z-index:1;
+  animation:fadeUp 0.7s var(--ease) 0.1s both;
+}
+.hero h1 em{font-style:italic;color:var(--accent);position:relative}
+.hero h1 em::after{
+  content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),transparent);
+  border-radius:2px;
+}
+.hero-sub{
+  font-size:clamp(16px,2vw,20px);color:var(--ink-muted);
+  max-width:540px;margin:1.75rem auto 0;
+  font-weight:300;line-height:1.75;
+  position:relative;z-index:1;
+  animation:fadeUp 0.7s var(--ease) 0.2s both;
+}
+.hero-actions{
+  display:flex;flex-wrap:wrap;align-items:center;
+  justify-content:center;gap:14px;
+  margin-top:2.75rem;position:relative;z-index:1;
+  animation:fadeUp 0.7s var(--ease) 0.3s both;
+}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--ink);color:#fff;
+  font-family:var(--font-body);font-size:15px;font-weight:500;
+  padding:15px 30px;border-radius:50px;
+  text-decoration:none;border:none;cursor:pointer;
+  transition:all 0.25s var(--ease);
+  box-shadow:0 4px 24px rgba(10,10,15,0.25),0 1px 4px rgba(10,10,15,0.1);
+  position:relative;overflow:hidden;
+}
+.btn-primary::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.08) 0%,transparent 60%);
+  pointer-events:none;
+}
+.btn-primary:hover{background:var(--accent);transform:translateY(-2px);box-shadow:0 8px 32px rgba(200,82,42,0.35)}
+.btn-primary svg{width:16px;height:16px;transition:transform 0.2s}
+.btn-primary:hover svg{transform:translateX(3px)}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:8px;
+  color:var(--ink-muted);font-size:14px;font-weight:400;
+  text-decoration:none;transition:color 0.2s;
+  padding:12px 20px;border-radius:40px;
+  border:1px solid var(--border-strong);
+  background:rgba(255,255,255,0.6);
+  backdrop-filter:blur(8px);
+}
+.btn-ghost:hover{color:var(--ink);background:rgba(255,255,255,0.9)}
+.hero-proof{
+  display:flex;flex-wrap:wrap;align-items:center;
+  justify-content:center;gap:0;
+  margin-top:3rem;position:relative;z-index:1;
+  animation:fadeUp 0.7s var(--ease) 0.4s both;
+  background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);
+  border:1px solid var(--border);border-radius:50px;
+  padding:10px 6px;max-width:fit-content;margin-left:auto;margin-right:auto;
+  box-shadow:0 2px 16px rgba(10,10,15,0.06);
+}
+.proof-item{
+  display:flex;align-items:center;gap:7px;
+  font-size:13px;color:var(--ink-muted);
+  padding:4px 16px;
+  border-right:1px solid var(--border);
+}
+.proof-item:last-child{border-right:none}
+.proof-item svg{width:14px;height:14px;color:var(--accent);flex-shrink:0}
+.hero-scroll{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  color:var(--ink-faint);font-size:10px;letter-spacing:0.12em;
+  text-transform:uppercase;z-index:1;
+  animation:fadeUp 0.7s var(--ease) 0.7s both;
+}
+.scroll-line{width:1px;height:36px;background:var(--border-strong);animation:scrollPulse 2.5s infinite}
+@keyframes scrollPulse{
+  0%{transform:scaleY(0);transform-origin:top}
+  45%{transform:scaleY(1);transform-origin:top}
+  55%{transform:scaleY(1);transform-origin:bottom}
+  100%{transform:scaleY(0);transform-origin:bottom}
+}
 
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 2rem; height: 60px;
-    background: rgba(250,249,247,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
-  .nav-logo {
-    font-family: var(--font-display);
-    font-size: 20px; color: var(--ink);
-    text-decoration: none; letter-spacing: -0.02em;
-  }
-  .nav-logo span { color: var(--accent); }
-  .nav-cta {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--ink); color: #fff;
-    font-family: var(--font-body); font-size: 12px; font-weight: 400;
-    padding: 6px 14px; border-radius: 30px;
-    text-decoration: none; transition: background 0.2s var(--ease);
-  }
-  .nav-cta:hover { background: var(--accent); }
+/* ── SECTION LABEL ── */
+.section-label{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 16px;
+  background:#fff;color:var(--accent);
+  border-radius:999px;font-size:11px;font-weight:600;
+  letter-spacing:0.12em;text-transform:uppercase;
+  border:1px solid rgba(200,82,42,0.15);
+  box-shadow:0 2px 12px rgba(200,82,42,0.08);
+}
+.section-label::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent)}
 
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh; display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 120px 2rem 80px; text-align: center;
-    position: relative; overflow: hidden;
-  }
-  .hero-bg {
-    position: absolute; inset: 0; z-index: 0;
-    background:
-      radial-gradient(ellipse 60% 50% at 20% 40%, rgba(200,82,42,0.06) 0%, transparent 70%),
-      radial-gradient(ellipse 50% 60% at 80% 60%, rgba(200,82,42,0.04) 0%, transparent 70%);
-  }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--accent-light); color: var(--accent-dark);
-    font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
-    padding: 5px 14px; border-radius: 40px;
-    border: 1px solid rgba(200,82,42,0.2);
-    margin-bottom: 2rem; position: relative; z-index: 1;
-    animation: fadeUp 0.6s var(--ease) both;
-  }
-  .hero-badge::before {
-    content: ''; width: 6px; height: 6px; border-radius: 50%;
-    background: var(--accent); display: inline-block;
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
-  }
-  .hero h1 {
-    font-family: var(--font-display);
-    font-size: clamp(42px, 7vw, 88px);
-    line-height: 1.05; letter-spacing: -0.03em;
-    color: var(--ink); max-width: 900px;
-    position: relative; z-index: 1;
-    animation: fadeUp 0.6s var(--ease) 0.1s both;
-  }
-  .hero h1 em { font-style: italic; color: var(--accent); }
-  .hero-sub {
-    font-size: clamp(16px, 2vw, 20px); color: var(--ink-muted);
-    max-width: 560px; margin: 1.5rem auto 0;
-    font-weight: 300; line-height: 1.7;
-    position: relative; z-index: 1;
-    animation: fadeUp 0.6s var(--ease) 0.2s both;
-  }
-  .hero-actions {
-    display: flex; flex-wrap: wrap; align-items: center;
-    justify-content: center; gap: 12px;
-    margin-top: 2.5rem; position: relative; z-index: 1;
-    animation: fadeUp 0.6s var(--ease) 0.3s both;
-  }
-  .btn-primary {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: var(--ink); color: #fff;
-    font-family: var(--font-body); font-size: 15px; font-weight: 500;
-    padding: 14px 28px; border-radius: 40px;
-    text-decoration: none; border: none; cursor: pointer;
-    transition: all 0.2s var(--ease);
-  }
-  .btn-primary:hover { background: var(--accent); transform: translateY(-1px); }
-  .btn-primary svg { width: 16px; height: 16px; transition: transform 0.2s; }
-  .btn-primary:hover svg { transform: translateX(3px); }
-  .btn-ghost {
-    display: inline-flex; align-items: center; gap: 8px;
-    color: var(--ink-muted); font-size: 14px; font-weight: 400;
-    text-decoration: none; transition: color 0.2s;
-  }
-  .btn-ghost:hover { color: var(--ink); }
-  .hero-proof {
-    display: flex; flex-wrap: wrap; align-items: center;
-    justify-content: center; gap: 24px;
-    margin-top: 3rem; position: relative; z-index: 1;
-    animation: fadeUp 0.6s var(--ease) 0.4s both;
-  }
-  .proof-item {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 13px; color: var(--ink-muted);
-  }
-  .proof-item svg { width: 14px; height: 14px; color: var(--accent); flex-shrink: 0; }
-  .hero-scroll {
-    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 6px;
-    color: var(--ink-faint); font-size: 11px; letter-spacing: 0.08em;
-    text-transform: uppercase; z-index: 1;
-    animation: fadeUp 0.6s var(--ease) 0.6s both;
-  }
-  .scroll-line {
-    width: 1px; height: 40px; background: var(--border-strong);
-    animation: scrollPulse 2s infinite;
-  }
-  @keyframes scrollPulse {
-    0% { transform: scaleY(0); transform-origin: top; }
-    50% { transform: scaleY(1); transform-origin: top; }
-    51% { transform: scaleY(1); transform-origin: bottom; }
-    100% { transform: scaleY(0); transform-origin: bottom; }
-  }
+/* ── WHAT ── */
+.what{padding:120px 2rem;max-width:1100px;margin:0 auto;position:relative;z-index:1}
+.what-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:3.5rem}
+.what-left h2{font-family:var(--font-display);font-size:clamp(32px,4vw,54px);line-height:1.08;letter-spacing:-0.025em}
+.what-left h2 em{font-style:italic;color:var(--accent)}
+.what-left p{margin-top:1.5rem;color:var(--ink-muted);font-size:16px;font-weight:300;line-height:1.8}
+.what-right{display:flex;flex-direction:column;gap:0}
+.audit-item{
+  display:flex;align-items:flex-start;gap:16px;
+  padding:18px 0;border-bottom:1px solid var(--border);
+  transition:all 0.2s var(--ease);cursor:default;
+}
+.audit-item:first-child{border-top:1px solid var(--border)}
+.audit-item:hover{padding-left:6px}
+.audit-num{font-family:var(--font-display);font-style:italic;font-size:16px;color:var(--ink-faint);min-width:28px;padding-top:2px}
+.audit-text strong{font-size:14px;font-weight:500;display:block;margin-bottom:2px}
+.audit-text span{font-size:13px;color:var(--ink-muted)}
 
-  /* ── WHAT ── */
-  .what {
-    padding: 100px 2rem;
-    max-width: 1100px; margin: 0 auto;
-  }
-  .section-label {
-    font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--accent);
-    margin-bottom: 1rem;
-  }
-  .what-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px; align-items: center;
-    margin-top: 3rem;
-  }
-  .what-left h2 {
-    font-family: var(--font-display);
-    font-size: clamp(32px, 4vw, 52px);
-    line-height: 1.1; letter-spacing: -0.02em;
-  }
-  .what-left h2 em { font-style: italic; color: var(--accent); }
-  .what-left p {
-    margin-top: 1.25rem; color: var(--ink-muted);
-    font-size: 16px; font-weight: 300; line-height: 1.75;
-  }
-  .what-right { display: flex; flex-direction: column; gap: 1px; }
-  .audit-item {
-    display: flex; align-items: flex-start; gap: 14px;
-    padding: 16px 0; border-bottom: 1px solid var(--border);
-  }
-  .audit-item:first-child { border-top: 1px solid var(--border); }
-  .audit-num {
-    font-family: var(--font-display); font-style: italic;
-    font-size: 18px; color: var(--ink-faint); min-width: 28px;
-    padding-top: 1px;
-  }
-  .audit-text strong { font-size: 14px; font-weight: 500; display: block; }
-  .audit-text span { font-size: 13px; color: var(--ink-muted); }
+/* ── METHODOLOGY ── */
+.method{padding:0 2rem 120px;max-width:1100px;margin:0 auto;position:relative;z-index:1}
+.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.method-card{
+  background:var(--ink);border-radius:var(--radius-xl);
+  padding:2.5rem;position:relative;overflow:hidden;
+  box-shadow:0 24px 64px rgba(10,10,15,0.3),0 4px 16px rgba(10,10,15,0.15);
+}
+.method-card::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(91,79,207,0.25) 0%,transparent 70%);
+  pointer-events:none;
+}
+.method-card::after{
+  content:'';position:absolute;bottom:-40px;left:-40px;
+  width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,82,42,0.15) 0%,transparent 70%);
+  pointer-events:none;
+}
+.method-card-inner{position:relative;z-index:1}
+.method-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(91,79,207,0.18);color:#b8b0f8;
+  font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
+  padding:5px 14px;border-radius:40px;
+  border:1px solid rgba(91,79,207,0.25);
+  margin-bottom:1.5rem;
+}
+.method-pill svg{width:11px;height:11px}
+.method-card h3{
+  font-family:var(--font-display);font-size:30px;
+  color:#fff;line-height:1.15;letter-spacing:-0.025em;
+  margin-bottom:1.25rem;
+}
+.method-card h3 em{font-style:italic;color:#b8b0f8}
+.method-list{list-style:none;display:flex;flex-direction:column;gap:12px}
+.method-list li{
+  display:flex;align-items:flex-start;gap:12px;
+  font-size:13px;color:rgba(255,255,255,0.65);font-weight:300;line-height:1.5;
+}
+.method-list li::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:rgba(184,176,248,0.6);flex-shrink:0;margin-top:6px;
+}
+.method-stack{
+  display:flex;align-items:center;gap:12px;
+  margin-top:2rem;padding-top:1.5rem;
+  border-top:1px solid rgba(255,255,255,0.08);
+}
+.stack-label{font-size:11px;color:rgba(255,255,255,0.25);white-space:nowrap}
+.stack-tags{display:flex;flex-wrap:wrap;gap:6px}
+.stack-tag{
+  font-size:11px;background:rgba(255,255,255,0.07);
+  color:rgba(255,255,255,0.45);border-radius:var(--radius);
+  padding:3px 9px;font-weight:400;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.method-right h2{font-family:var(--font-display);font-size:clamp(30px,3.5vw,48px);line-height:1.1;letter-spacing:-0.025em;margin-top:1rem}
+.method-right h2 em{font-style:italic;color:var(--ai)}
+.method-right p{margin-top:1.25rem;color:var(--ink-muted);font-size:15px;font-weight:300;line-height:1.8}
 
-  /* ── PROCESS ── */
-  .process {
-    padding: 100px 2rem;
-    background: var(--ink);
-    color: #fff;
-  }
-  .process-inner { max-width: 1100px; margin: 0 auto; }
-  .process-inner .section-label { color: rgba(255,255,255,0.4); }
-  .process-inner h2 {
-    font-family: var(--font-display);
-    font-size: clamp(32px, 4vw, 52px);
-    line-height: 1.1; letter-spacing: -0.02em;
-    margin-top: 0.5rem;
-  }
-  .process-inner h2 em { font-style: italic; color: rgba(200,82,42,0.9); }
-  .steps-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 2px; margin-top: 3rem;
-  }
-  .step-box {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: var(--radius-lg);
-    padding: 1.75rem;
-  }
-  .step-box:hover { background: rgba(255,255,255,0.07); }
-  .step-n {
-    font-family: var(--font-display); font-style: italic;
-    font-size: 40px; color: rgba(255,255,255,0.15);
-    line-height: 1; margin-bottom: 1rem;
-  }
-  .step-box h3 { font-size: 15px; font-weight: 500; color: #fff; margin-bottom: 8px; }
-  .step-box p { font-size: 13px; color: rgba(255,255,255,0.5); font-weight: 300; line-height: 1.6; }
+/* ── PROCESS ── */
+.process{
+  padding:100px 2rem;
+  background:var(--ink);
+  position:relative;overflow:hidden;z-index:1;
+}
+.process::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 50% 60% at 10% 50%,rgba(91,79,207,0.12) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 50% at 90% 50%,rgba(200,82,42,0.1) 0%,transparent 60%);
+  pointer-events:none;
+}
+.process-grid-lines{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 20%,transparent 80%);
+  pointer-events:none;
+}
+.process-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1}
+.process-logo{height:64px;width:auto;display:block;margin:0 auto 2rem;filter:brightness(0) invert(1) opacity(0.8)}
+.process-inner .section-label{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);border-color:rgba(255,255,255,0.08);box-shadow:none;margin-bottom:1rem}
+.process-inner .section-label::before{background:rgba(255,255,255,0.4)}
+.process-inner h2{font-family:var(--font-display);font-size:clamp(32px,4vw,54px);line-height:1.1;letter-spacing:-0.025em;margin-top:0.5rem;color:#fff}
+.process-inner h2 em{font-style:italic;color:rgba(200,82,42,0.9)}
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;margin-top:3.5rem;background:rgba(255,255,255,0.06);border-radius:var(--radius-xl);overflow:hidden;border:1px solid rgba(255,255,255,0.06)}
+.step-box{
+  background:rgba(255,255,255,0.025);
+  padding:2rem;transition:background 0.25s var(--ease);
+  position:relative;overflow:hidden;
+}
+.step-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.08),transparent);
+  opacity:0;transition:opacity 0.25s;
+}
+.step-box:hover{background:rgba(255,255,255,0.06)}
+.step-box:hover::before{opacity:1}
+.step-n{font-family:var(--font-display);font-style:italic;font-size:44px;color:rgba(255,255,255,0.1);line-height:1;margin-bottom:1.25rem}
+.step-box h3{font-size:15px;font-weight:500;color:#fff;margin-bottom:10px}
+.step-box p{font-size:13px;color:rgba(255,255,255,0.45);font-weight:300;line-height:1.65}
 
-  /* ── TUNNEL ── */
-  #formulaire {
-    padding: 100px 2rem;
-    max-width: 760px; margin: 0 auto;
-  }
-  .tunnel-header { text-align: center; margin-bottom: 3rem; }
-  .tunnel-header h2 {
-    font-family: var(--font-display);
-    font-size: clamp(32px, 4vw, 52px);
-    line-height: 1.1; letter-spacing: -0.02em;
-  }
-  .tunnel-header h2 em { font-style: italic; color: var(--accent); }
-  .tunnel-header p {
-    margin-top: 1rem; color: var(--ink-muted);
-    font-size: 16px; font-weight: 300;
-  }
+/* ── SOCIAL PROOF ── */
+.proof-section{padding:100px 2rem;background:var(--surface-2);position:relative;z-index:1}
+.proof-inner{max-width:1100px;margin:0 auto}
+.proof-header{text-align:center;margin-bottom:3.5rem}
+.proof-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1px;background:var(--border);border-radius:var(--radius-xl);overflow:hidden;border:1px solid var(--border)}
+.proof-card{background:var(--surface);padding:2rem;transition:background 0.2s}
+.proof-card:hover{background:#fff}
+.proof-stars{display:flex;gap:3px;margin-bottom:1rem}
+.proof-star{width:14px;height:14px;color:var(--accent)}
+.proof-quote{font-size:14px;color:var(--ink);font-weight:300;line-height:1.75;margin-bottom:1.5rem;font-style:italic;opacity:0.85}
+.proof-quote::before{content:'"';color:var(--accent);font-style:normal;font-weight:500;font-size:18px;line-height:0;vertical-align:-4px;margin-right:2px}
+.proof-quote::after{content:'"';color:var(--accent);font-style:normal;font-weight:500;font-size:18px;line-height:0;vertical-align:-4px;margin-left:2px}
+.proof-author{display:flex;align-items:center;gap:10px}
+.proof-avatar{width:36px;height:36px;border-radius:50%;background:var(--surface-3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:var(--ink-muted);flex-shrink:0;border:1px solid var(--border-strong)}
+.proof-name{font-size:13px;font-weight:500}
+.proof-role{font-size:12px;color:var(--ink-faint)}
 
-  /* Progress */
-  .t-progress { margin-bottom: 2.5rem; }
-  .t-progress-top {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 8px;
-  }
-  .t-progress-steps { display: flex; gap: 4px; }
-  .t-step-dot {
-    width: 24px; height: 24px; border-radius: 50%;
-    border: 1.5px solid var(--border-strong);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 500; color: var(--ink-faint);
-    transition: all 0.3s var(--ease); cursor: default;
-    background: var(--surface);
-  }
-  .t-step-dot.active { border-color: var(--ink); color: var(--ink); }
-  .t-step-dot.done { background: var(--ink); border-color: var(--ink); color: #fff; }
-  .t-pct { font-size: 12px; color: var(--ink-faint); }
-  .t-bar { height: 2px; background: var(--surface-3); border-radius: 2px; }
-  .t-fill { height: 100%; background: var(--ink); border-radius: 2px; transition: width 0.5s var(--ease); width: 0%; }
+/* ── FAQ ── */
+.faq-section{padding:100px 2rem;max-width:720px;margin:0 auto;position:relative;z-index:1}
+.faq-header{text-align:center;margin-bottom:3.5rem}
+.faq-header h2{font-family:var(--font-display);font-size:clamp(28px,3.5vw,46px);letter-spacing:-0.025em;margin-top:1rem}
+.faq-item{border-top:1px solid var(--border);padding:1.5rem 0}
+.faq-item:last-child{border-bottom:1px solid var(--border)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:16px;font-size:15px;font-weight:500;color:var(--ink);user-select:none;transition:color 0.2s}
+.faq-q:hover{color:var(--accent)}
+.faq-icon{width:22px;height:22px;flex-shrink:0;border-radius:50%;background:var(--surface-2);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;transition:all 0.3s var(--ease)}
+.faq-icon svg{width:10px;height:10px;transition:stroke 0.2s}
+.faq-item.open .faq-icon{transform:rotate(45deg);background:var(--ink);border-color:var(--ink)}
+.faq-item.open .faq-icon svg{stroke:#fff}
+.faq-item.open .faq-q{color:var(--accent)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.4s var(--ease),padding 0.3s}
+.faq-item.open .faq-a{max-height:300px;padding-top:14px}
+.faq-a p{font-size:14px;color:var(--ink-muted);font-weight:300;line-height:1.8}
 
-  /* Sections */
-  .t-section { display: none; }
-  .t-section.active { display: block; animation: fadeUp 0.4s var(--ease) both; }
-  .t-section-head {
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 1.75rem; padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .t-section-icon {
-    width: 36px; height: 36px; border-radius: var(--radius);
-    background: var(--surface-2); display: flex; align-items: center;
-    justify-content: center; flex-shrink: 0;
-  }
-  .t-section-icon svg { width: 16px; height: 16px; color: var(--ink-muted); }
-  .t-section-title { font-size: 15px; font-weight: 500; }
-  .t-section-sub { font-size: 12px; color: var(--ink-faint); margin-top: 2px; }
+/* ── TUNNEL ── */
+#formulaire{padding:100px 2rem;max-width:780px;margin:0 auto;position:relative;z-index:1}
+.tunnel-header{text-align:center;margin-bottom:3.5rem}
+.tunnel-header h2{font-family:var(--font-display);font-size:clamp(32px,4vw,54px);line-height:1.1;letter-spacing:-0.025em;margin-top:1rem}
+.tunnel-header h2 em{font-style:italic;color:var(--accent)}
+.tunnel-header p{margin-top:1rem;color:var(--ink-muted);font-size:15px;font-weight:300}
 
-  /* Fields */
-  .f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .f-field { margin-bottom: 1.25rem; }
-  .f-field:last-child { margin-bottom: 0; }
-  .f-label {
-    display: block; font-size: 13px; font-weight: 500;
-    color: var(--ink); margin-bottom: 6px;
-  }
-  .f-label .req { color: var(--accent); margin-left: 2px; }
-  .f-hint { font-size: 12px; color: var(--ink-faint); margin-bottom: 6px; line-height: 1.5; }
-  .f-input, .f-select, .f-textarea {
-    width: 100%; padding: 11px 14px;
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius);
-    background: #fff; color: var(--ink);
-    font-family: var(--font-body); font-size: 14px; font-weight: 300;
-    outline: none; transition: border-color 0.2s var(--ease);
-    -webkit-appearance: none;
-  }
-  .f-input::placeholder, .f-textarea::placeholder { color: var(--ink-faint); }
-  .f-input:focus, .f-select:focus, .f-textarea:focus {
-    border-color: var(--ink);
-  }
-  .f-input.err, .f-select.err, .f-textarea.err { border-color: #d63031; }
-  .f-textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
-  .f-select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a5a5a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+/* Progress */
+.t-progress{margin-bottom:3rem}
+.t-progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.t-progress-steps{display:flex;gap:6px}
+.t-step-dot{
+  width:28px;height:28px;border-radius:50%;
+  border:1.5px solid var(--border-strong);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:500;color:var(--ink-faint);
+  transition:all 0.35s var(--ease-spring);cursor:default;
+  background:var(--surface);
+}
+.t-step-dot.active{border-color:var(--ink);color:var(--ink);transform:scale(1.1);box-shadow:0 0 0 4px rgba(10,10,15,0.06)}
+.t-step-dot.done{background:var(--ink);border-color:var(--ink);color:#fff}
+.t-pct{font-size:12px;color:var(--ink-faint)}
+.t-bar{height:2px;background:var(--surface-3);border-radius:2px;overflow:hidden}
+.t-fill{height:100%;background:linear-gradient(90deg,var(--ink),var(--accent));border-radius:2px;transition:width 0.6s var(--ease);width:0%}
 
-  /* Checkboxes */
-  .f-checks { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-top: 6px; }
-  .f-check {
-    display: flex; align-items: center; gap: 9px;
-    padding: 9px 12px; border: 1px solid var(--border-strong);
-    border-radius: var(--radius); cursor: pointer;
-    transition: all 0.15s var(--ease); user-select: none;
-    background: #fff;
-  }
-  .f-check:hover { border-color: var(--ink); }
-  .f-check.on { border-color: var(--ink); background: var(--ink); }
-  .f-check.on .f-check-box { background: transparent; border-color: rgba(255,255,255,0.4); }
-  .f-check.on .f-check-box::after { opacity: 1; }
-  .f-check.on .f-check-label { color: #fff; }
-  .f-check-box {
-    width: 15px; height: 15px; border-radius: 3px;
-    border: 1px solid var(--border-strong); flex-shrink: 0;
-    position: relative; background: var(--surface-2);
-  }
-  .f-check-box::after {
-    content: ''; position: absolute; top: 2px; left: 4px;
-    width: 5px; height: 8px;
-    border: 1.5px solid #fff; border-top: none; border-left: none;
-    transform: rotate(45deg); opacity: 0; transition: opacity 0.15s;
-  }
-  .f-check-label { font-size: 12px; font-weight: 400; color: var(--ink); }
+/* Form sections */
+.t-section{display:none}
+.t-section.active{display:block;animation:fadeUp 0.4s var(--ease) both}
+.t-section-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-xl);padding:2rem;box-shadow:0 4px 24px rgba(10,10,15,0.06)}
+.t-section-head{display:flex;align-items:center;gap:12px;margin-bottom:2rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border)}
+.t-section-icon{width:40px;height:40px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.t-section-icon svg{width:18px;height:18px;color:var(--ink-muted)}
+.t-section-title{font-size:15px;font-weight:500}
+.t-section-sub{font-size:12px;color:var(--ink-faint);margin-top:2px}
 
-  /* Auth toggles */
-  .f-auth { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
-  .f-auth-item {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 14px 16px; border: 1px solid var(--border-strong);
-    border-radius: var(--radius); cursor: pointer;
-    transition: all 0.15s var(--ease); user-select: none; background: #fff;
-  }
-  .f-auth-item:hover { border-color: var(--ink); }
-  .f-auth-item.on { border-color: #1a7a4a; background: #f0faf5; }
-  .f-auth-item.on .f-toggle { background: #1a7a4a; border-color: #1a7a4a; }
-  .f-auth-item.on .f-toggle::after { opacity: 1; }
-  .f-auth-item.on .f-auth-title { color: #0d4a2a; }
-  .f-auth-item.on .f-auth-sub { color: #1a7a4a; }
-  .f-toggle {
-    width: 18px; height: 18px; border-radius: 3px; flex-shrink: 0;
-    border: 1px solid var(--border-strong);
-    position: relative; margin-top: 1px; background: var(--surface-2);
-    transition: all 0.15s;
-  }
-  .f-toggle::after {
-    content: ''; position: absolute; top: 2px; left: 5px;
-    width: 6px; height: 9px;
-    border: 1.5px solid #fff; border-top: none; border-left: none;
-    transform: rotate(45deg); opacity: 0; transition: opacity 0.15s;
-  }
-  .f-auth-title { font-size: 13px; font-weight: 500; color: var(--ink); }
-  .f-auth-sub { font-size: 12px; color: var(--ink-faint); margin-top: 2px; line-height: 1.4; }
+/* Fields */
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.f-field{margin-bottom:1.25rem}
+.f-field:last-child{margin-bottom:0}
+.f-label{display:block;font-size:13px;font-weight:500;color:var(--ink);margin-bottom:6px}
+.f-label .req{color:var(--accent);margin-left:2px}
+.f-hint{font-size:12px;color:var(--ink-faint);margin-bottom:8px;line-height:1.5}
+.f-input,.f-select,.f-textarea{
+  width:100%;padding:12px 14px;
+  border:1px solid var(--border-strong);
+  border-radius:var(--radius);
+  background:#fff;color:var(--ink);
+  font-family:var(--font-body);font-size:14px;font-weight:300;
+  outline:none;transition:all 0.2s var(--ease);
+  -webkit-appearance:none;appearance:none;
+}
+.f-input::placeholder,.f-textarea::placeholder{color:var(--ink-faint)}
+.f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(10,10,15,0.06)}
+.f-input.err,.f-select.err,.f-textarea.err{border-color:#d63031;box-shadow:0 0 0 3px rgba(214,48,49,0.08)}
+.f-textarea{resize:vertical;min-height:90px;line-height:1.65}
+.f-select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a5a5a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
 
-  /* Navigation */
-  .t-nav {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-top: 2rem; padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
-  }
-  .btn-back {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: none; border: none; cursor: pointer;
-    font-family: var(--font-body); font-size: 14px;
-    color: var(--ink-muted); transition: color 0.2s;
-  }
-  .btn-back:hover { color: var(--ink); }
-  .btn-next {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--ink); color: #fff; border: none; cursor: pointer;
-    font-family: var(--font-body); font-size: 14px; font-weight: 500;
-    padding: 12px 24px; border-radius: 40px;
-    transition: all 0.2s var(--ease);
-  }
-  .btn-next:hover { background: var(--accent); }
-  .btn-next svg { width: 14px; height: 14px; transition: transform 0.2s; }
-  .btn-next:hover svg { transform: translateX(3px); }
-  .btn-submit {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: var(--accent); color: #fff; border: none; cursor: pointer;
-    font-family: var(--font-body); font-size: 15px; font-weight: 500;
-    padding: 14px 32px; border-radius: 40px;
-    transition: all 0.2s var(--ease);
-  }
-  .btn-submit:hover { background: var(--accent-dark); transform: translateY(-1px); }
-  .btn-submit svg { width: 16px; height: 16px; }
+/* Checkboxes */
+.f-checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px;margin-top:8px}
+.f-check{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border:1px solid var(--border-strong);
+  border-radius:var(--radius);cursor:pointer;
+  transition:all 0.18s var(--ease);user-select:none;
+  background:#fff;
+}
+.f-check:hover{border-color:var(--ink);background:var(--surface)}
+.f-check.on{border-color:var(--ink);background:var(--ink)}
+.f-check.on .f-check-box{background:transparent;border-color:rgba(255,255,255,0.35)}
+.f-check.on .f-check-box::after{opacity:1}
+.f-check.on .f-check-label{color:#fff}
+.f-check-box{width:15px;height:15px;border-radius:4px;border:1px solid var(--border-strong);flex-shrink:0;position:relative;background:var(--surface-2)}
+.f-check-box::after{content:'';position:absolute;top:2px;left:4px;width:5px;height:8px;border:1.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);opacity:0;transition:opacity 0.15s}
+.f-check-label{font-size:12px;font-weight:400;color:var(--ink)}
 
-  /* Success */
-  .t-success {
-    display: none; text-align: center;
-    padding: 4rem 2rem; animation: fadeUp 0.5s var(--ease) both;
-  }
-  .t-success.show { display: block; }
-  .success-icon {
-    width: 64px; height: 64px; border-radius: 50%;
-    background: var(--accent-light); border: 1px solid rgba(200,82,42,0.2);
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 1.5rem;
-  }
-  .success-icon svg { width: 28px; height: 28px; color: var(--accent); }
-  .t-success h3 {
-    font-family: var(--font-display); font-size: 36px;
-    letter-spacing: -0.02em; margin-bottom: 1rem;
-  }
-  .t-success p { color: var(--ink-muted); font-size: 15px; font-weight: 300; line-height: 1.7; max-width: 440px; margin: 0 auto; }
-  .t-success-details {
-    margin-top: 2rem; padding: 1.25rem 1.5rem;
-    background: var(--surface-2); border-radius: var(--radius-lg);
-    text-align: left; max-width: 440px; margin: 2rem auto 0;
-  }
-  .t-success-details p { font-size: 13px; color: var(--ink-muted); margin-bottom: 6px; }
-  .t-success-details p:last-child { margin-bottom: 0; }
-  .t-success-details strong { color: var(--ink); }
+/* Auth toggles */
+.f-auth{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.f-auth-item{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:14px 16px;border:1px solid var(--border-strong);
+  border-radius:var(--radius);cursor:pointer;
+  transition:all 0.18s var(--ease);user-select:none;background:#fff;
+}
+.f-auth-item:hover{border-color:var(--ink)}
+.f-auth-item.on{border-color:#1a7a4a;background:#f0faf5}
+.f-auth-item.on .f-toggle{background:#1a7a4a;border-color:#1a7a4a}
+.f-auth-item.on .f-toggle::after{opacity:1}
+.f-auth-item.on .f-auth-title{color:#0d4a2a}
+.f-auth-item.on .f-auth-sub{color:#1a7a4a}
+.f-toggle{width:18px;height:18px;border-radius:4px;flex-shrink:0;border:1px solid var(--border-strong);position:relative;margin-top:2px;background:var(--surface-2);transition:all 0.15s}
+.f-toggle::after{content:'';position:absolute;top:2px;left:5px;width:6px;height:9px;border:1.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);opacity:0;transition:opacity 0.15s}
+.f-auth-title{font-size:13px;font-weight:500;color:var(--ink)}
+.f-auth-sub{font-size:12px;color:var(--ink-faint);margin-top:3px;line-height:1.45}
 
-  /* Closing */
-  .t-closing {
-    background: var(--surface-2); border-radius: var(--radius-lg);
-    padding: 1.5rem; margin-bottom: 2rem;
-    border-left: 3px solid var(--accent);
-  }
-  .t-closing p {
-    font-size: 13px; color: var(--ink-muted); line-height: 1.7;
-    font-style: italic;
-  }
-  .t-closing p + p { margin-top: 8px; }
+/* Navigation */
+.t-nav{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+.btn-back{display:inline-flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;font-family:var(--font-body);font-size:14px;color:var(--ink-muted);transition:color 0.2s;padding:0}
+.btn-back:hover{color:var(--ink)}
+.btn-next{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border:none;cursor:pointer;font-family:var(--font-body);font-size:14px;font-weight:500;padding:12px 26px;border-radius:40px;transition:all 0.2s var(--ease);box-shadow:0 2px 12px rgba(10,10,15,0.2)}
+.btn-next:hover{background:var(--accent);transform:translateY(-1px);box-shadow:0 4px 20px rgba(200,82,42,0.3)}
+.btn-next svg{width:14px;height:14px;transition:transform 0.2s}
+.btn-next:hover svg{transform:translateX(3px)}
+.btn-submit{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#fff;border:none;cursor:pointer;font-family:var(--font-body);font-size:15px;font-weight:500;padding:14px 32px;border-radius:40px;transition:all 0.2s var(--ease);box-shadow:0 4px 20px rgba(200,82,42,0.3)}
+.btn-submit:hover{background:var(--accent-dark);transform:translateY(-1px);box-shadow:0 6px 28px rgba(200,82,42,0.4)}
+.btn-submit svg{width:16px;height:16px}
 
-  /* ── FOOTER ── */
-  footer {
-    padding: 3rem 2rem;
-    border-top: 1px solid var(--border);
-    text-align: center;
-    font-size: 13px; color: var(--ink-faint);
-  }
+/* Closing */
+.t-closing{background:var(--surface-2);border-radius:var(--radius-lg);padding:1.5rem 1.75rem;margin-bottom:2rem;border-left:3px solid var(--accent)}
+.t-closing p{font-size:13px;color:var(--ink-muted);line-height:1.75;font-style:italic}
+.t-closing p+p{margin-top:8px}
 
-  /* ── UTILS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+/* Success */
+.t-success{display:none;text-align:center;padding:5rem 2rem;animation:fadeUp 0.5s var(--ease) both}
+.t-success.show{display:block}
+.success-icon{width:72px;height:72px;border-radius:50%;background:var(--accent-light);border:1px solid rgba(200,82,42,0.2);display:flex;align-items:center;justify-content:center;margin:0 auto 1.75rem;box-shadow:0 8px 32px rgba(200,82,42,0.15)}
+.success-icon svg{width:30px;height:30px;color:var(--accent)}
+.t-success h3{font-family:var(--font-display);font-size:40px;letter-spacing:-0.025em;margin-bottom:1rem}
+.t-success p{color:var(--ink-muted);font-size:15px;font-weight:300;line-height:1.75;max-width:440px;margin:0 auto}
+.t-success-details{margin:2rem auto 0;padding:1.5rem;background:var(--surface-2);border-radius:var(--radius-lg);text-align:left;max-width:440px}
+.t-success-details p{font-size:13px;color:var(--ink-muted);margin-bottom:6px}
+.t-success-details p:last-child{margin-bottom:0}
+.t-success-details strong{color:var(--ink)}
 
-  .toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-    background: #d63031; color: #fff;
-    font-size: 13px; font-weight: 500;
-    padding: 10px 20px; border-radius: 40px;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.3s var(--ease);
-    z-index: 200; white-space: nowrap;
-  }
-  .toast.show { opacity: 1; }
+/* ── FOOTER ── */
+footer{padding:3rem 2rem;border-top:1px solid var(--border);text-align:center;font-size:13px;color:var(--ink-faint);position:relative;z-index:1}
 
-  /* ── METHODOLOGY ── */
-  .method {
-    padding: 100px 2rem;
-    max-width: 1100px; margin: 0 auto;
-  }
-  .method-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 60px; align-items: center; margin-top: 3rem;
-  }
-  .method-right h2 {
-    font-family: var(--font-display);
-    font-size: clamp(32px, 4vw, 52px);
-    line-height: 1.1; letter-spacing: -0.02em;
-  }
-  .method-right h2 em { font-style: italic; color: var(--ai); }
-  .method-right p {
-    margin-top: 1.25rem; color: var(--ink-muted);
-    font-size: 16px; font-weight: 300; line-height: 1.75;
-  }
-  .method-card {
-    background: var(--ink); border-radius: var(--radius-lg);
-    padding: 2rem; position: relative; overflow: hidden;
-  }
-  .method-card::before {
-    content: '';
-    position: absolute; top: -40px; right: -40px;
-    width: 160px; height: 160px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(91,79,207,0.3) 0%, transparent 70%);
-  }
-  .method-pill {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(91,79,207,0.2); color: #a89ff5;
-    font-size: 11px; font-weight: 500; letter-spacing: 0.06em;
-    padding: 4px 12px; border-radius: 40px;
-    border: 1px solid rgba(91,79,207,0.3);
-    margin-bottom: 1.25rem;
-  }
-  .method-pill svg { width: 12px; height: 12px; }
-  .method-card h3 {
-    font-family: var(--font-display); font-size: 28px;
-    color: #fff; line-height: 1.2; letter-spacing: -0.02em;
-    margin-bottom: 1rem;
-  }
-  .method-card h3 em { font-style: italic; color: #a89ff5; }
-  .method-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  .method-list li {
-    display: flex; align-items: flex-start; gap: 10px;
-    font-size: 14px; color: rgba(255,255,255,0.7); font-weight: 300;
-  }
-  .method-list li::before {
-    content: ''; width: 5px; height: 5px; border-radius: 50%;
-    background: #a89ff5; flex-shrink: 0; margin-top: 8px;
-  }
-  .method-stack {
-    display: flex; align-items: center; gap: 10px;
-    margin-top: 1.5rem; padding-top: 1.25rem;
-    border-top: 1px solid rgba(255,255,255,0.08);
-  }
-  .stack-label { font-size: 12px; color: rgba(255,255,255,0.3); }
-  .stack-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-  .stack-tag {
-    font-size: 11px; background: rgba(255,255,255,0.07);
-    color: rgba(255,255,255,0.5); border-radius: 4px;
-    padding: 3px 8px; font-weight: 400;
-  }
+/* ── UTILS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0a0a0f;color:#fff;font-size:13px;font-weight:500;padding:12px 22px;border-radius:40px;opacity:0;pointer-events:none;transition:opacity 0.3s var(--ease);z-index:200;white-space:nowrap;box-shadow:0 4px 20px rgba(10,10,15,0.25)}
+.toast.show{opacity:1}
 
-  /* ── SOCIAL PROOF ── */
-  .proof-section {
-    background: var(--surface-2);
-    padding: 80px 2rem;
-  }
-  .proof-inner { max-width: 1100px; margin: 0 auto; }
-  .proof-inner .section-label { text-align: center; margin-bottom: 3rem; }
-  .proof-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1px; background: var(--border); border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
-  .proof-card {
-    background: var(--surface); padding: 1.75rem;
-  }
-  .proof-quote {
-    font-size: 15px; color: var(--ink); font-weight: 300;
-    line-height: 1.7; margin-bottom: 1.25rem;
-    font-style: italic;
-  }
-  .proof-quote::before { content: '"'; color: var(--accent); font-style: normal; font-weight: 500; }
-  .proof-quote::after { content: '"'; color: var(--accent); font-style: normal; font-weight: 500; }
-  .proof-author { display: flex; align-items: center; gap: 10px; }
-  .proof-avatar {
-    width: 36px; height: 36px; border-radius: 50%;
-    background: var(--surface-3); display: flex; align-items: center;
-    justify-content: center; font-size: 14px; font-weight: 500;
-    color: var(--ink-muted); flex-shrink: 0;
-  }
-  .proof-name { font-size: 13px; font-weight: 500; }
-  .proof-role { font-size: 12px; color: var(--ink-faint); }
+/* ── LIQUID / MOTION EFFECTS ── */
+.liquid-blob{
+  position:absolute;border-radius:50%;filter:blur(60px);
+  opacity:0.5;pointer-events:none;will-change:transform;
+}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.8s var(--ease),transform 0.8s var(--ease)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}
+.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}
 
-  /* ── FAQ ── */
-  .faq-section {
-    padding: 100px 2rem;
-    max-width: 720px; margin: 0 auto;
-  }
-  .faq-section .section-label { text-align: center; margin-bottom: 3rem; }
-  .faq-section h2 {
-    font-family: var(--font-display);
-    font-size: clamp(28px, 3.5vw, 44px);
-    text-align: center; letter-spacing: -0.02em;
-    margin-bottom: 3rem;
-  }
-  .faq-item {
-    border-top: 1px solid var(--border);
-    padding: 1.25rem 0;
-  }
-  .faq-item:last-child { border-bottom: 1px solid var(--border); }
-  .faq-q {
-    display: flex; justify-content: space-between; align-items: center;
-    cursor: pointer; gap: 16px;
-    font-size: 15px; font-weight: 500; color: var(--ink);
-    user-select: none;
-  }
-  .faq-icon {
-    width: 20px; height: 20px; flex-shrink: 0;
-    border-radius: 50%; background: var(--surface-2);
-    display: flex; align-items: center; justify-content: center;
-    transition: transform 0.3s var(--ease), background 0.2s;
-  }
-  .faq-icon svg { width: 10px; height: 10px; }
-  .faq-item.open .faq-icon { transform: rotate(45deg); background: var(--ink); }
-  .faq-item.open .faq-icon svg { stroke: #fff; }
-  .faq-a {
-    max-height: 0; overflow: hidden;
-    transition: max-height 0.4s var(--ease), padding 0.3s;
-  }
-  .faq-item.open .faq-a { max-height: 300px; padding-top: 12px; }
-  .faq-a p { font-size: 14px; color: var(--ink-muted); font-weight: 300; line-height: 1.75; }
-
-  @media (max-width: 768px) {
-    nav { padding: 0 1.25rem; }
-    .what-grid { grid-template-columns: 1fr; gap: 40px; }
-    .method-grid { grid-template-columns: 1fr; gap: 40px; }
-    .f-row { grid-template-columns: 1fr; }
-    .hero h1 { font-size: 42px; }
-    #formulaire { padding: 60px 1.25rem; }
-    .what, .process-inner { padding-left: 0; padding-right: 0; }
-    .what { padding: 60px 1.25rem; }
-    .process { padding: 60px 1.25rem; }
-    .method { padding: 60px 1.25rem; }
-    .proof-section { padding: 60px 1.25rem; }
-    .faq-section { padding: 60px 1.25rem; }
-  }
+@media(max-width:768px){
+  nav{padding:0 1.25rem}
+  .nav-pill{display:none}
+  .what-grid,.method-grid{grid-template-columns:1fr;gap:48px}
+  .f-row{grid-template-columns:1fr}
+  .hero h1{font-size:40px}
+  .hero-proof{flex-direction:column;gap:0;border-radius:16px}
+  .proof-item{border-right:none;border-bottom:1px solid var(--border)}
+  .proof-item:last-child{border-bottom:none}
+  #formulaire{padding:60px 1.25rem}
+  .what,.method,.faq-section{padding-left:1.25rem;padding-right:1.25rem}
+  .process{padding:60px 1.25rem}
+  .proof-section{padding:60px 1.25rem}
+  .t-section-card{padding:1.5rem}
+}
 </style>
 </head>
 <body>
 
+<canvas id="bg-canvas"></canvas>
+
 <!-- NAV -->
-<nav>
-  <a class="nav-logo" href="#">Audit<span>.</span>ai</a>
-  <a class="nav-cta" href="#formulaire">
-    Soumettre mon site
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+<nav id="main-nav">
+  <a class="nav-logo" href="#">
+    <img src="/logo.png" alt="Audit.ai Logo" class="nav-logo-img" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'font-family:var(--font-display);font-size:20px;letter-spacing:-0.02em\'>Audit<span style=\'color:var(--accent)\'>.</span>ai</span>'">
   </a>
+  <div class="nav-right">
+    <div class="nav-pill"><div class="badge-dot-inner" style="width:5px;height:5px;border-radius:50%;background:var(--ai);animation:pulse 2s infinite;display:inline-block;margin-right:6px"></div>Expert IA</div>
+    <a class="nav-cta" href="#formulaire">
+      Soumettre mon site
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-badge">Expert humain × Intelligence artificielle</div>
-  <h1>Votre landing page analysée<br>par un expert, <em>assistété</em> par l'IA.</h1>
+  <div class="hero-glow"></div>
+  <div class="hero-grid-lines"></div>
+
+  <div class="hero-badge">
+    <span class="badge-dot"><span class="badge-dot-inner"></span>Expert humain</span>
+    <span class="badge-sep"></span>
+    <span class="badge-ai">× Intelligence artificielle</span>
+  </div>
+
+  <h1>Votre landing page analysée<br>par un expert, <em>assisté</em> par l'IA.</h1>
   <p class="hero-sub">Un regard humain senior combiné à la puissance de l'IA pour décortiquer votre site en profondeur — copywriting, UX, conversion, positionnement. Gratuit. Bienveillant. Actionnable.</p>
+
   <div class="hero-actions">
     <a class="btn-primary" href="#formulaire">
       Soumettre mon projet gratuitement
@@ -658,6 +576,7 @@
       Comment ça marche ?
     </a>
   </div>
+
   <div class="hero-proof">
     <div class="proof-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
@@ -676,6 +595,7 @@
       Retours actionnables
     </div>
   </div>
+
   <div class="hero-scroll">
     <div class="scroll-line"></div>
     Défiler
@@ -684,13 +604,13 @@
 
 <!-- WHAT -->
 <section class="what" id="comment">
-  <div class="section-label">Ce que vous recevez</div>
+  <div class="reveal"><div class="section-label">Ce que vous recevez</div></div>
   <div class="what-grid">
-    <div class="what-left">
+    <div class="what-left reveal reveal-delay-1">
       <h2>Pas un robot.<br>Un expert <em>armé</em> de l'IA.</h2>
       <p>L'IA analyse votre site en quelques secondes sur des dizaines de critères. L'expert humain contextualise, priorise et rédige les recommandations qui comptent vraiment pour votre situation. Le meilleur des deux mondes.</p>
     </div>
-    <div class="what-right">
+    <div class="what-right reveal reveal-delay-2">
       <div class="audit-item"><span class="audit-num">01</span><div class="audit-text"><strong>Clarté de l'offre</strong><span>Votre message est-il compris en 5 secondes ?</span></div></div>
       <div class="audit-item"><span class="audit-num">02</span><div class="audit-text"><strong>Copywriting & proposition de valeur</strong><span>Ce que vous dites, comment vous le dites.</span></div></div>
       <div class="audit-item"><span class="audit-num">03</span><div class="audit-text"><strong>UX & design</strong><span>Friction, lisibilité, hiérarchie visuelle.</span></div></div>
@@ -704,45 +624,51 @@
 <!-- METHODOLOGY -->
 <section class="method">
   <div class="method-grid">
-    <div class="method-card">
-      <div class="method-pill">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2zM12 8v4l3 3"/></svg>
-        Méthodologie
-      </div>
-      <h3>L'IA scanne.<br>L'expert <em>comprend.</em></h3>
-      <ul class="method-list">
-        <li>Analyse automatique de 40+ critères en temps réel</li>
-        <li>Détection des patterns de conversion manquants</li>
-        <li>Comparaison avec les benchmarks de votre secteur</li>
-        <li>L'expert valide, contextualise et priorise chaque point</li>
-        <li>Recommandations rédigées en langage humain, pas en jargon</li>
-        <li>Suggestions concrètes applicables dès demain</li>
-      </ul>
-      <div class="method-stack">
-        <span class="stack-label">Alimenté par</span>
-        <div class="stack-tags">
-          <span class="stack-tag">GPT-4o</span>
-          <span class="stack-tag">Claude</span>
-          <span class="stack-tag">CRO Expert</span>
-          <span class="stack-tag">UX Review</span>
+    <div class="method-card reveal">
+      <div class="method-card-inner">
+        <div class="method-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2zM12 8v4l3 3"/></svg>
+          Méthodologie
+        </div>
+        <h3>L'IA scanne.<br>L'expert <em>comprend.</em></h3>
+        <ul class="method-list">
+          <li>Analyse automatique de 40+ critères en temps réel</li>
+          <li>Détection des patterns de conversion manquants</li>
+          <li>Comparaison avec les benchmarks de votre secteur</li>
+          <li>L'expert valide, contextualise et priorise chaque point</li>
+          <li>Recommandations rédigées en langage humain, pas en jargon</li>
+          <li>Suggestions concrètes applicables dès demain</li>
+        </ul>
+        <div class="method-stack">
+          <span class="stack-label">Alimenté par</span>
+          <div class="stack-tags">
+            <span class="stack-tag">GPT-4o</span>
+            <span class="stack-tag">Claude</span>
+            <span class="stack-tag">CRO Expert</span>
+            <span class="stack-tag">UX Review</span>
+          </div>
         </div>
       </div>
     </div>
-    <div class="method-right">
+    <div class="method-right reveal reveal-delay-1">
       <div class="section-label">Pourquoi c'est différent</div>
       <h2>L'expérience humaine,<br>la vitesse de <em>l'IA.</em></h2>
       <p>Un consultant CRO seul voit beaucoup — mais il analyse votre site avec ses biais et ses angles morts. L'IA seule génère des retours génériques sans comprendre votre contexte.</p>
-      <p style="margin-top: 1rem;">Combinés, ils produisent une analyse plus complète, plus rapide et plus pertinente que ce que chacun ferait seul.</p>
+      <p style="margin-top:1.25rem">Combinés, ils produisent une analyse plus complète, plus rapide et plus pertinente que ce que chacun ferait seul.</p>
     </div>
   </div>
 </section>
 
 <!-- PROCESS -->
-<section class="process" id="comment">
+<section class="process" id="comment2">
+  <div class="process-grid-lines"></div>
   <div class="process-inner">
-    <div class="section-label">Comment ça marche</div>
-    <h2>4 étapes. <em>Expert + IA.</em> Gratuit.</h2>
-    <div class="steps-grid">
+    <div style="text-align:center;margin-bottom:2rem" class="reveal">
+      <img src="/logo.png" alt="Audit.ai Logo" class="process-logo" onerror="this.style.display='none'">
+      <div class="section-label">Comment ça marche</div>
+    </div>
+    <h2 style="text-align:center;color:#fff;margin-top:1rem" class="reveal reveal-delay-1">4 étapes. <em>Expert + IA.</em> Gratuit.</h2>
+    <div class="steps-grid reveal reveal-delay-2">
       <div class="step-box">
         <div class="step-n">01</div>
         <h3>Vous soumettez</h3>
@@ -770,36 +696,50 @@
 <!-- SOCIAL PROOF -->
 <section class="proof-section">
   <div class="proof-inner">
-    <div class="section-label">Ce qu'ils en pensent</div>
-    <div class="proof-grid">
+    <div class="proof-header reveal">
+      <div class="section-label">Ce qu'ils en pensent</div>
+    </div>
+    <div class="proof-grid reveal reveal-delay-1">
       <div class="proof-card">
+        <div class="proof-stars">
+          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
         <p class="proof-quote">En 48h j'avais un audit complet avec des points que mon équipe n'avait jamais vus. Le combo expert + IA c'est vraiment une autre dimension.</p>
         <div class="proof-author">
           <div class="proof-avatar">S</div>
-          <div>
-            <div class="proof-name">Sarah M.</div>
-            <div class="proof-role">Fondatrice, SaaS B2B</div>
-          </div>
+          <div><div class="proof-name">Sarah M.</div><div class="proof-role">Fondatrice, SaaS B2B</div></div>
         </div>
       </div>
       <div class="proof-card">
+        <div class="proof-stars">
+          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
         <p class="proof-quote">Ce n'est pas juste une liste de problèmes. C'est une vraie feuille de route. J'ai appliqué 3 recommandations en une semaine et mon taux de conversion a grimpé de 18%.</p>
         <div class="proof-author">
           <div class="proof-avatar">K</div>
-          <div>
-            <div class="proof-name">Karim B.</div>
-            <div class="proof-role">Co-fondateur, Marketplace</div>
-          </div>
+          <div><div class="proof-name">Karim B.</div><div class="proof-role">Co-fondateur, Marketplace</div></div>
         </div>
       </div>
       <div class="proof-card">
+        <div class="proof-stars">
+          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
         <p class="proof-quote">Je pensais que mon hero était clair. L'audit m'a montré que personne ne comprenait ce qu'on faisait avant le 3e paragraphe. Game changer.</p>
         <div class="proof-author">
           <div class="proof-avatar">L</div>
-          <div>
-            <div class="proof-name">Lucie D.</div>
-            <div class="proof-role">CEO, App mobile</div>
-          </div>
+          <div><div class="proof-name">Lucie D.</div><div class="proof-role">CEO, App mobile</div></div>
         </div>
       </div>
     </div>
@@ -808,48 +748,52 @@
 
 <!-- FAQ -->
 <section class="faq-section">
-  <div class="section-label">Questions fréquentes</div>
-  <h2>Tout ce que vous voulez savoir</h2>
-  <div class="faq-item">
-    <div class="faq-q" onclick="toggleFaq(this)">
-      C'est vraiment gratuit ? Il y a un piège ?
-      <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
-    </div>
-    <div class="faq-a"><p>Aucun piège. L'audit est 100% gratuit, sans engagement, sans carte bancaire. L'initiative existe pour aider les fondateurs à progresser et pour démontrer la valeur d'un audit expert assisté par l'IA.</p></div>
+  <div class="faq-header reveal">
+    <div class="section-label">Questions fréquentes</div>
+    <h2>Tout ce que vous voulez savoir</h2>
   </div>
-  <div class="faq-item">
-    <div class="faq-q" onclick="toggleFaq(this)">
-      Qui réalise l'audit — un humain ou une IA ?
-      <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+  <div class="reveal reveal-delay-1">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        C'est vraiment gratuit ? Il y a un piège ?
+        <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="faq-a"><p>Aucun piège. L'audit est 100% gratuit, sans engagement, sans carte bancaire. L'initiative existe pour aider les fondateurs à progresser et pour démontrer la valeur d'un audit expert assisté par l'IA.</p></div>
     </div>
-    <div class="faq-a"><p>Les deux. L'IA (GPT-4o + Claude) analyse automatiquement votre site sur 40+ critères objectifs. Un expert humain reprend ensuite l'analyse, la contextualise à votre secteur et rédige les recommandations finales. Vous obtenez la rapidité de l'IA et le jugement de l'humain.</p></div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q" onclick="toggleFaq(this)">
-      Mon projet est encore en construction, puis-je quand même soumettre ?
-      <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Qui réalise l'audit — un humain ou une IA ?
+        <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="faq-a"><p>Les deux. L'IA (GPT-4o + Claude) analyse automatiquement votre site sur 40+ critères objectifs. Un expert humain reprend ensuite l'analyse, la contextualise à votre secteur et rédige les recommandations finales. Vous obtenez la rapidité de l'IA et le jugement de l'humain.</p></div>
     </div>
-    <div class="faq-a"><p>Absolument. En fait, c'est souvent le meilleur moment pour recevoir un audit — avant de trop investir dans une direction. Tous les projets sont les bienvenus, quel que soit le stade.</p></div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q" onclick="toggleFaq(this)">
-      Sous quel délai vais-je recevoir l'audit ?
-      <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Mon projet est encore en construction, puis-je quand même soumettre ?
+        <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="faq-a"><p>Absolument. En fait, c'est souvent le meilleur moment pour recevoir un audit — avant de trop investir dans une direction. Tous les projets sont les bienvenus, quel que soit le stade.</p></div>
     </div>
-    <div class="faq-a"><p>En général sous 48 à 72 heures ouvrées. L'IA traite votre soumission immédiatement, l'expert humain finalise le rapport dans les jours suivants.</p></div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q" onclick="toggleFaq(this)">
-      Puis-je refuser que mon site apparaisse dans une vidéo ?
-      <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Sous quel délai vais-je recevoir l'audit ?
+        <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="faq-a"><p>En général sous 48 à 72 heures ouvrées. L'IA traite votre soumission immédiatement, l'expert humain finalise le rapport dans les jours suivants.</p></div>
     </div>
-    <div class="faq-a"><p>Oui, totalement. Les autorisations dans le formulaire sont indépendantes — vous pouvez recevoir l'audit sans autoriser la diffusion publique. Votre analyse reste confidentielle si vous le souhaitez.</p></div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Puis-je refuser que mon site apparaisse dans une vidéo ?
+        <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="faq-a"><p>Oui, totalement. Les autorisations dans le formulaire sont indépendantes — vous pouvez recevoir l'audit sans autoriser la diffusion publique. Votre analyse reste confidentielle si vous le souhaitez.</p></div>
+    </div>
   </div>
 </section>
 
 <!-- TUNNEL FORMULAIRE -->
 <section id="formulaire">
-  <div class="tunnel-header">
+  <div class="tunnel-header reveal">
     <div class="section-label">Candidature gratuite</div>
     <h2>Soumettre mon<br><em>projet pour audit</em></h2>
     <p>Remplissez les 6 sections ci-dessous. Tous les projets sont les bienvenus.</p>
@@ -871,277 +815,134 @@
   </div>
 
   <div id="form-wrap">
-
     <!-- S1 -->
     <div class="t-section active" id="s1">
-      <div class="t-section-head">
-        <div class="t-section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <div class="t-section-card">
+        <div class="t-section-head">
+          <div class="t-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+          <div><div class="t-section-title">Présentation</div><div class="t-section-sub">Dites-nous qui vous êtes</div></div>
         </div>
-        <div>
-          <div class="t-section-title">Présentation</div>
-          <div class="t-section-sub">Dites-nous qui vous êtes</div>
+        <div class="f-row">
+          <div class="f-field"><label class="f-label">Prénom et nom <span class="req">*</span></label><input class="f-input" id="f-nom" type="text" placeholder="Marie Dupont" /></div>
+          <div class="f-field"><label class="f-label">Adresse email <span class="req">*</span></label><input class="f-input" id="f-email" type="email" placeholder="marie@monprojet.com" /></div>
         </div>
-      </div>
-      <div class="f-row">
-        <div class="f-field">
-          <label class="f-label">Prénom et nom <span class="req">*</span></label>
-          <input class="f-input" id="f-nom" type="text" placeholder="Marie Dupont" />
+        <div class="f-row">
+          <div class="f-field"><label class="f-label">Nom du projet <span class="req">*</span></label><input class="f-input" id="f-projet" type="text" placeholder="ex : Koopon, Dumini…" /></div>
+          <div class="f-field">
+            <label class="f-label">Votre rôle <span class="req">*</span></label>
+            <select class="f-select" id="f-role">
+              <option value="">Sélectionner…</option>
+              <option>Fondateur / Co-fondateur</option><option>CEO / Directeur</option>
+              <option>Product Manager</option><option>Développeur solo</option>
+              <option>Designer</option><option>Marketeur</option>
+              <option>Créateur de contenu</option><option>Freelance</option><option>Autre</option>
+            </select>
+          </div>
         </div>
-        <div class="f-field">
-          <label class="f-label">Adresse email <span class="req">*</span></label>
-          <input class="f-input" id="f-email" type="email" placeholder="marie@monprojet.com" />
-        </div>
-      </div>
-      <div class="f-row">
-        <div class="f-field">
-          <label class="f-label">Nom du projet <span class="req">*</span></label>
-          <input class="f-input" id="f-projet" type="text" placeholder="ex : Koopon, Dumini…" />
-        </div>
-        <div class="f-field">
-          <label class="f-label">Votre rôle <span class="req">*</span></label>
-          <select class="f-select" id="f-role">
-            <option value="">Sélectionner…</option>
-            <option>Fondateur / Co-fondateur</option>
-            <option>CEO / Directeur</option>
-            <option>Product Manager</option>
-            <option>Développeur solo</option>
-            <option>Designer</option>
-            <option>Marketeur</option>
-            <option>Créateur de contenu</option>
-            <option>Freelance</option>
-            <option>Autre</option>
-          </select>
-        </div>
-      </div>
-      <div class="t-nav">
-        <span></span>
-        <button class="btn-next" onclick="goTo(2)">
-          Continuer
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
+        <div class="t-nav"><span></span><button class="btn-next" onclick="goTo(2)">Continuer<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
       </div>
     </div>
 
     <!-- S2 -->
     <div class="t-section" id="s2">
-      <div class="t-section-head">
-        <div class="t-section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a10 10 0 1 1 0 20A10 10 0 0 1 12 2z"/><path d="M12 8v4l3 3"/></svg>
+      <div class="t-section-card">
+        <div class="t-section-head">
+          <div class="t-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a10 10 0 1 1 0 20A10 10 0 0 1 12 2z"/><path d="M12 8v4l3 3"/></svg></div>
+          <div><div class="t-section-title">Votre projet</div><div class="t-section-sub">Aidez-nous à comprendre ce que vous construisez</div></div>
         </div>
-        <div>
-          <div class="t-section-title">Votre projet</div>
-          <div class="t-section-sub">Aidez-nous à comprendre ce que vous construisez</div>
-        </div>
-      </div>
-      <div class="f-field">
-        <label class="f-label">URL de votre site <span class="req">*</span></label>
-        <div class="f-hint">La page principale que vous souhaitez faire auditer.</div>
-        <input class="f-input" id="f-url" type="url" placeholder="https://monprojet.com" />
-      </div>
-      <div class="f-field">
-        <label class="f-label">Décrivez votre projet en 2–3 phrases <span class="req">*</span></label>
-        <div class="f-hint">Qu'est-ce que vous faites, pour qui, et comment ?</div>
-        <textarea class="f-textarea" id="f-desc" placeholder="ex : On aide les freelances à gérer leurs notes de frais en 30 secondes grâce à la reconnaissance de reçus par IA…"></textarea>
-      </div>
-      <div class="f-field">
-        <label class="f-label">Quel problème concret résolvez-vous ? <span class="req">*</span></label>
-        <div class="f-hint">Décrivez la douleur ou la frustration de votre client cible.</div>
-        <textarea class="f-textarea" id="f-probleme" rows="2" placeholder="ex : Les freelances perdent des heures à saisir manuellement leurs dépenses…"></textarea>
-      </div>
-      <div class="f-field">
-        <label class="f-label">Qui sont vos clients idéaux ? <span class="req">*</span></label>
-        <div class="f-hint">Soyez précis : secteur, taille, comportement, douleur principale.</div>
-        <textarea class="f-textarea" id="f-clients" rows="2" placeholder="ex : Développeurs freelance 25–40 ans, facturation mensuelle…"></textarea>
-      </div>
-      <div class="t-nav">
-        <button class="btn-back" onclick="goTo(1)">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          Retour
-        </button>
-        <button class="btn-next" onclick="goTo(3)">
-          Continuer
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
+        <div class="f-field"><label class="f-label">URL de votre site <span class="req">*</span></label><div class="f-hint">La page principale que vous souhaitez faire auditer.</div><input class="f-input" id="f-url" type="url" placeholder="https://monprojet.com" /></div>
+        <div class="f-field"><label class="f-label">Décrivez votre projet en 2–3 phrases <span class="req">*</span></label><div class="f-hint">Qu'est-ce que vous faites, pour qui, et comment ?</div><textarea class="f-textarea" id="f-desc" placeholder="ex : On aide les freelances à gérer leurs notes de frais en 30 secondes grâce à la reconnaissance de reçus par IA…"></textarea></div>
+        <div class="f-field"><label class="f-label">Quel problème concret résolvez-vous ? <span class="req">*</span></label><div class="f-hint">Décrivez la douleur ou la frustration de votre client cible.</div><textarea class="f-textarea" id="f-probleme" rows="2" placeholder="ex : Les freelances perdent des heures à saisir manuellement leurs dépenses…"></textarea></div>
+        <div class="f-field"><label class="f-label">Qui sont vos clients idéaux ? <span class="req">*</span></label><div class="f-hint">Soyez précis : secteur, taille, comportement, douleur principale.</div><textarea class="f-textarea" id="f-clients" rows="2" placeholder="ex : Développeurs freelance 25–40 ans, facturation mensuelle…"></textarea></div>
+        <div class="t-nav"><button class="btn-back" onclick="goTo(1)"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Retour</button><button class="btn-next" onclick="goTo(3)">Continuer<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
       </div>
     </div>
 
     <!-- S3 -->
     <div class="t-section" id="s3">
-      <div class="t-section-head">
-        <div class="t-section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      <div class="t-section-card">
+        <div class="t-section-head">
+          <div class="t-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+          <div><div class="t-section-title">Votre landing page</div><div class="t-section-sub">L'objectif de votre page et son CTA</div></div>
         </div>
-        <div>
-          <div class="t-section-title">Votre landing page</div>
-          <div class="t-section-sub">L'objectif de votre page et son CTA</div>
-        </div>
-      </div>
-      <div class="f-field">
-        <label class="f-label">Objectif principal de cette page <span class="req">*</span></label>
-        <select class="f-select" id="f-objectif">
-          <option value="">Sélectionner…</option>
-          <option>Inscription / création de compte</option>
-          <option>Capture d'email / lead magnet</option>
-          <option>Vente directe</option>
-          <option>Prise de rendez-vous</option>
-          <option>Téléchargement (app, extension…)</option>
-          <option>Notoriété / découverte</option>
-          <option>Autre</option>
-        </select>
-      </div>
-      <div class="f-field">
-        <label class="f-label">Votre CTA principal <span class="req">*</span></label>
-        <div class="f-hint">Le bouton ou lien le plus important sur votre page.</div>
-        <input class="f-input" id="f-cta" type="text" placeholder='ex : "Essayer gratuitement", "Réserver une démo"…' />
-      </div>
-      <div class="f-field">
-        <label class="f-label">Qu'espérez-vous que les visiteurs fassent ?</label>
-        <div class="f-hint">Décrivez l'action idéale et ce qui devrait les convaincre.</div>
-        <textarea class="f-textarea" id="f-action" rows="2" placeholder="ex : Je veux qu'ils s'inscrivent à l'essai gratuit, mais j'ai l'impression que le prix les bloque…"></textarea>
-      </div>
-      <div class="t-nav">
-        <button class="btn-back" onclick="goTo(2)">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          Retour
-        </button>
-        <button class="btn-next" onclick="goTo(4)">
-          Continuer
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
+        <div class="f-field"><label class="f-label">Objectif principal de cette page <span class="req">*</span></label><select class="f-select" id="f-objectif"><option value="">Sélectionner…</option><option>Inscription / création de compte</option><option>Capture d'email / lead magnet</option><option>Vente directe</option><option>Prise de rendez-vous</option><option>Téléchargement (app, extension…)</option><option>Notoriété / découverte</option><option>Autre</option></select></div>
+        <div class="f-field"><label class="f-label">Votre CTA principal <span class="req">*</span></label><div class="f-hint">Le bouton ou lien le plus important sur votre page.</div><input class="f-input" id="f-cta" type="text" placeholder='ex : "Essayer gratuitement", "Réserver une démo"…' /></div>
+        <div class="f-field"><label class="f-label">Qu'espérez-vous que les visiteurs fassent ?</label><div class="f-hint">Décrivez l'action idéale et ce qui devrait les convaincre.</div><textarea class="f-textarea" id="f-action" rows="2" placeholder="ex : Je veux qu'ils s'inscrivent à l'essai gratuit, mais j'ai l'impression que le prix les bloque…"></textarea></div>
+        <div class="t-nav"><button class="btn-back" onclick="goTo(2)"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Retour</button><button class="btn-next" onclick="goTo(4)">Continuer<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
       </div>
     </div>
 
     <!-- S4 -->
     <div class="t-section" id="s4">
-      <div class="t-section-head">
-        <div class="t-section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg>
+      <div class="t-section-card">
+        <div class="t-section-head">
+          <div class="t-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg></div>
+          <div><div class="t-section-title">Vos défis</div><div class="t-section-sub">Ce qui vous bloque aujourd'hui</div></div>
         </div>
-        <div>
-          <div class="t-section-title">Vos défis</div>
-          <div class="t-section-sub">Ce qui vous bloque aujourd'hui</div>
-        </div>
-      </div>
-      <div class="f-field">
-        <label class="f-label">Votre plus grande difficulté aujourd'hui <span class="req">*</span></label>
-        <div class="f-hint">Conversion faible, message peu clair, trafic qui ne convertit pas… Soyez direct.</div>
-        <textarea class="f-textarea" id="f-defi" placeholder="ex : Beaucoup de visiteurs arrivent mais personne ne s'inscrit. Je ne sais pas si c'est le prix, le message ou la page…"></textarea>
-      </div>
-      <div class="f-field">
-        <label class="f-label">Question pour l'expert</label>
-        <div class="f-hint">Une question précise = un retour plus utile.</div>
-        <textarea class="f-textarea" id="f-question" rows="2" placeholder="ex : Est-ce que ma proposition de valeur est claire dès les 5 premières secondes ?"></textarea>
-      </div>
-      <div class="f-field">
-        <label class="f-label">Si vous pouviez améliorer une seule chose…</label>
-        <textarea class="f-textarea" id="f-priorite" rows="2" placeholder="ex : La clarté du héros. Je pense que les gens ne comprennent pas ce qu'on fait en arrivant…"></textarea>
-      </div>
-      <div class="t-nav">
-        <button class="btn-back" onclick="goTo(3)">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          Retour
-        </button>
-        <button class="btn-next" onclick="goTo(5)">
-          Continuer
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
+        <div class="f-field"><label class="f-label">Votre plus grande difficulté aujourd'hui <span class="req">*</span></label><div class="f-hint">Conversion faible, message peu clair, trafic qui ne convertit pas… Soyez direct.</div><textarea class="f-textarea" id="f-defi" placeholder="ex : Beaucoup de visiteurs arrivent mais personne ne s'inscrit. Je ne sais pas si c'est le prix, le message ou la page…"></textarea></div>
+        <div class="f-field"><label class="f-label">Question pour l'expert</label><div class="f-hint">Une question précise = un retour plus utile.</div><textarea class="f-textarea" id="f-question" rows="2" placeholder="ex : Est-ce que ma proposition de valeur est claire dès les 5 premières secondes ?"></textarea></div>
+        <div class="f-field"><label class="f-label">Si vous pouviez améliorer une seule chose…</label><textarea class="f-textarea" id="f-priorite" rows="2" placeholder="ex : La clarté du héros. Je pense que les gens ne comprennent pas ce qu'on fait en arrivant…"></textarea></div>
+        <div class="t-nav"><button class="btn-back" onclick="goTo(3)"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Retour</button><button class="btn-next" onclick="goTo(5)">Continuer<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
       </div>
     </div>
 
     <!-- S5 -->
     <div class="t-section" id="s5">
-      <div class="t-section-head">
-        <div class="t-section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      <div class="t-section-card">
+        <div class="t-section-head">
+          <div class="t-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+          <div><div class="t-section-title">Axes d'analyse</div><div class="t-section-sub">Sélectionnez au moins un domaine</div></div>
         </div>
-        <div>
-          <div class="t-section-title">Axes d'analyse</div>
-          <div class="t-section-sub">Sélectionnez au moins un domaine</div>
+        <div class="f-field">
+          <label class="f-label">Quels aspects souhaitez-vous analyser ? <span class="req">*</span></label>
+          <div class="f-checks" id="checks">
+            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Marketing</span></div>
+            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Proposition de valeur</span></div>
+            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Copywriting</span></div>
+            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Design</span></div>
+            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">UX</span></div>
+            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Mobile</span></div>
+            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">SEO</span></div>
+            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Performance</span></div>
+            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Conversion</span></div>
+            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Pricing</span></div>
+            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Structure produit</span></div>
+            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Full-stack / tech</span></div>
+            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">IA</span></div>
+            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Branding</span></div>
+          </div>
         </div>
-      </div>
-      <div class="f-field">
-        <label class="f-label">Quels aspects souhaitez-vous analyser ? <span class="req">*</span></label>
-        <div class="f-checks" id="checks">
-          <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Marketing</span></div>
-          <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Proposition de valeur</span></div>
-          <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Copywriting</span></div>
-          <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Design</span></div>
-          <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">UX</span></div>
-          <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Mobile</span></div>
-          <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">SEO</span></div>
-          <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Performance</span></div>
-          <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Conversion</span></div>
-          <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Pricing</span></div>
-          <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Structure produit</span></div>
-          <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Full-stack / tech</span></div>
-          <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">IA</span></div>
-          <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Branding</span></div>
-        </div>
-      </div>
-      <div class="t-nav">
-        <button class="btn-back" onclick="goTo(4)">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          Retour
-        </button>
-        <button class="btn-next" onclick="goTo(6)">
-          Continuer
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
+        <div class="t-nav"><button class="btn-back" onclick="goTo(4)"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Retour</button><button class="btn-next" onclick="goTo(6)">Continuer<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
       </div>
     </div>
 
     <!-- S6 -->
     <div class="t-section" id="s6">
-      <div class="t-section-head">
-        <div class="t-section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <div class="t-section-card">
+        <div class="t-section-head">
+          <div class="t-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div><div class="t-section-title">Autorisations</div><div class="t-section-sub">Dernière étape</div></div>
         </div>
-        <div>
-          <div class="t-section-title">Autorisations</div>
-          <div class="t-section-sub">Dernière étape</div>
+        <div class="t-closing">
+          <p>Chaque entrepreneur commence quelque part. Aucun projet n'est parfait — et c'est exactement pour ça que cette initiative existe.</p>
+          <p>L'objectif n'est pas de juger votre projet, mais de vous donner des retours honnêtes, actionnables et bienveillants. Chaque analyse est une opportunité de progresser. Nous apprenons tous ensemble.</p>
         </div>
-      </div>
-      <div class="t-closing">
-        <p>Chaque entrepreneur commence quelque part. Aucun projet n'est parfait — et c'est exactement pour ça que cette initiative existe.</p>
-        <p>L'objectif n'est pas de juger votre projet, mais de vous donner des retours honnêtes, actionnables et bienveillants. Chaque analyse est une opportunité de progresser. Nous apprenons tous ensemble.</p>
-      </div>
-      <div class="f-field">
-        <label class="f-label">Cochez les autorisations que vous accordez</label>
-        <div class="f-auth">
-          <div class="f-auth-item" onclick="this.classList.toggle('on')">
-            <div class="f-toggle"></div>
-            <div><div class="f-auth-title">Analyse publique du site</div><div class="f-auth-sub">J'autorise l'analyse publique de mon site web et de ma landing page.</div></div>
-          </div>
-          <div class="f-auth-item" onclick="this.classList.toggle('on')">
-            <div class="f-toggle"></div>
-            <div><div class="f-auth-title">Utilisation dans une vidéo</div><div class="f-auth-sub">J'autorise l'utilisation des retours dans une vidéo, un live ou un contenu éducatif.</div></div>
-          </div>
-          <div class="f-auth-item" onclick="this.classList.toggle('on')">
-            <div class="f-toggle"></div>
-            <div><div class="f-auth-title">Affichage du nom du projet</div><div class="f-auth-sub">J'autorise la mention du nom de mon projet lors de l'analyse.</div></div>
+        <div class="f-field">
+          <label class="f-label">Cochez les autorisations que vous accordez</label>
+          <div class="f-auth">
+            <div class="f-auth-item" onclick="this.classList.toggle('on')"><div class="f-toggle"></div><div><div class="f-auth-title">Analyse publique du site</div><div class="f-auth-sub">J'autorise l'analyse publique de mon site web et de ma landing page.</div></div></div>
+            <div class="f-auth-item" onclick="this.classList.toggle('on')"><div class="f-toggle"></div><div><div class="f-auth-title">Utilisation dans une vidéo</div><div class="f-auth-sub">J'autorise l'utilisation des retours dans une vidéo, un live ou un contenu éducatif.</div></div></div>
+            <div class="f-auth-item" onclick="this.classList.toggle('on')"><div class="f-toggle"></div><div><div class="f-auth-title">Affichage du nom du projet</div><div class="f-auth-sub">J'autorise la mention du nom de mon projet lors de l'analyse.</div></div></div>
           </div>
         </div>
-      </div>
-      <div class="t-nav">
-        <button class="btn-back" onclick="goTo(5)">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          Retour
-        </button>
-        <button class="btn-submit" onclick="submitForm()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-          Envoyer ma candidature
-        </button>
+        <div class="t-nav"><button class="btn-back" onclick="goTo(5)"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Retour</button><button class="btn-submit" onclick="submitForm()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>Envoyer ma candidature</button></div>
       </div>
     </div>
-
   </div>
 
   <!-- SUCCESS -->
   <div class="t-success" id="t-success">
-    <div class="success-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6L9 17l-5-5"/></svg>
-    </div>
+    <div class="success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6L9 17l-5-5"/></svg></div>
     <h3>Candidature reçue !</h3>
     <p>Merci d'avoir pris le temps de soumettre votre projet. Votre audit est en route. Vous recevrez les retours à l'adresse indiquée.</p>
     <div class="t-success-details">
@@ -1159,147 +960,144 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  console.log('SCRIPT LOADED');
-  
-  let current = 1;
-  const total = 6;
-
-  const required = {
-    1: ['f-nom','f-email','f-projet','f-role'],
-    2: ['f-url','f-desc','f-probleme','f-clients'],
-    3: ['f-objectif','f-cta'],
-    4: ['f-defi'],
-    5: [],
-    6: []
-  };
-
-  function validate(step) {
-    const fields = required[step] || [];
-    let ok = true;
-    fields.forEach(id => {
-      const el = document.getElementById(id);
-      if (!el || !el.value.trim()) {
-        el && el.classList.add('err');
-        ok = false;
-      } else {
-        el.classList.remove('err');
-      }
+/* ── LIQUID BACKGROUND CANVAS ── */
+(function(){
+  const canvas=document.getElementById('bg-canvas');
+  const ctx=canvas.getContext('2d');
+  let W,H,blobs;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+  function initBlobs(){
+    blobs=[
+      {x:W*0.15,y:H*0.3,r:Math.min(W,H)*0.28,vx:0.12,vy:0.08,color:'rgba(200,82,42,0.055)'},
+      {x:W*0.85,y:H*0.6,r:Math.min(W,H)*0.32,vx:-0.1,vy:0.09,color:'rgba(91,79,207,0.05)'},
+      {x:W*0.5,y:H*0.85,r:Math.min(W,H)*0.22,vx:0.07,vy:-0.11,color:'rgba(200,82,42,0.035)'},
+      {x:W*0.75,y:H*0.1,r:Math.min(W,H)*0.2,vx:-0.09,vy:0.06,color:'rgba(91,79,207,0.04)'},
+    ]
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    blobs.forEach(b=>{
+      b.x+=b.vx;b.y+=b.vy;
+      if(b.x<-b.r||b.x>W+b.r)b.vx*=-1;
+      if(b.y<-b.r||b.y>H+b.r)b.vy*=-1;
+      const g=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);
+      g.addColorStop(0,b.color);
+      g.addColorStop(1,'transparent');
+      ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+      ctx.fillStyle=g;ctx.fill();
     });
-    if (step === 5) {
-      const checked = document.querySelectorAll('.f-check.on').length;
-      if (checked === 0) {
-        showToast('Sélectionnez au moins un axe d\'analyse.');
-        return false;
-      }
-    }
-    if (!ok) showToast('Merci de remplir tous les champs obligatoires.');
-    return ok;
+    requestAnimationFrame(draw);
   }
+  resize();initBlobs();draw();
+  window.addEventListener('resize',()=>{resize();initBlobs()});
+  /* Mouse parallax */
+  window.addEventListener('mousemove',e=>{
+    const mx=e.clientX/W-0.5,my=e.clientY/H-0.5;
+    blobs.forEach((b,i)=>{
+      const strength=(i+1)*8;
+      b.x+=mx*strength*0.02;b.y+=my*strength*0.02;
+    });
+  },{passive:true});
+})();
 
-  function goTo(step) {
-    if (step > current && !validate(current)) return;
-    document.getElementById('s' + current).classList.remove('active');
-    document.getElementById('dot-' + current).classList.remove('active');
-    document.getElementById('dot-' + current).classList.add('done');
-    current = step;
-    document.getElementById('s' + current).classList.add('active');
-    document.getElementById('dot-' + current).classList.remove('done');
-    document.getElementById('dot-' + current).classList.add('active');
-    const pct = Math.round(((current - 1) / total) * 100);
-    document.getElementById('t-fill').style.width = pct + '%';
-    document.getElementById('t-pct').textContent = 'Étape ' + current + ' sur ' + total;
-    document.getElementById('formulaire').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+/* ── SCROLL REVEAL ── */
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}});
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 
-  function toggleCheck(el) { el.classList.toggle('on'); }
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('main-nav').classList.toggle('scrolled',window.scrollY>40);
+},{passive:true});
 
-  // ─── TALLY WEBHOOK ───────────────────────────────────────────────────────
-  // 1. Crée un formulaire Tally (gratuit) sur tally.so
-  // 2. Dans Tally : Integrations → Webhooks → Add webhook
-  // 3. Colle l'URL du webhook ici :
-  const TALLY_WEBHOOK = 'https://formsubmit.co/ajax/mmountagad1@gmail.com';
-  // ─────────────────────────────────────────────────────────────────────────
+/* ── FORM LOGIC ── */
+let current=1;
+const total=6;
+const required={1:['f-nom','f-email','f-projet','f-role'],2:['f-url','f-desc','f-probleme','f-clients'],3:['f-objectif','f-cta'],4:['f-defi'],5:[],6:[]};
 
-  async function submitForm() {
-    if (!validate(6)) return;
-
-    const btn = document.querySelector('.btn-submit');
-    btn.disabled = true;
-    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="animation:spin 1s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Envoi en cours…';
-
-    const auths = Array.from(document.querySelectorAll('.f-auth-item.on'))
-      .map(el => el.querySelector('.f-auth-title').textContent);
-    const checks = Array.from(document.querySelectorAll('.f-check.on'))
-      .map(el => el.querySelector('.f-check-label').textContent);
-
-    const payload = {
-      nom:         document.getElementById('f-nom').value.trim(),
-      email:       document.getElementById('f-email').value.trim(),
-      projet:      document.getElementById('f-projet').value.trim(),
-      role:        document.getElementById('f-role').value,
-      url:         document.getElementById('f-url').value.trim(),
-      description: document.getElementById('f-desc').value.trim(),
-      probleme:    document.getElementById('f-probleme').value.trim(),
-      clients:     document.getElementById('f-clients').value.trim(),
-      objectif:    document.getElementById('f-objectif').value,
-      cta:         document.getElementById('f-cta').value.trim(),
-      action:      document.getElementById('f-action').value.trim(),
-      defi:        document.getElementById('f-defi').value.trim(),
-      question:    document.getElementById('f-question').value.trim(),
-      priorite:    document.getElementById('f-priorite').value.trim(),
-      axes:        checks.join(', '),
-      autorisations: auths.join(', '),
-      soumis_le:   new Date().toLocaleString('fr-FR')
-    };
-
-    try {
-  await fetch('https://formsubmit.co/ajax/mmountagad1@gmail.com', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
-    body: JSON.stringify(payload)
+function validate(step){
+  const fields=required[step]||[];let ok=true;
+  fields.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el||!el.value.trim()){el&&el.classList.add('err');ok=false}
+    else el.classList.remove('err');
   });
-} catch (e) {
-  console.error(e);
+  if(step===5&&document.querySelectorAll('.f-check.on').length===0){showToast("Sélectionnez au moins un axe d'analyse.");return false}
+  if(!ok)showToast('Merci de remplir tous les champs obligatoires.');
+  return ok;
 }
 
-    document.getElementById('s-projet').textContent = payload.projet;
-    document.getElementById('s-url').textContent    = payload.url;
-    document.getElementById('s-email').textContent  = payload.email;
+function goTo(step){
+  if(step>current&&!validate(current))return;
+  document.getElementById('s'+current).classList.remove('active');
+  document.getElementById('dot-'+current).classList.remove('active');
+  document.getElementById('dot-'+current).classList.add('done');
+  current=step;
+  document.getElementById('s'+current).classList.add('active');
+  document.getElementById('dot-'+current).classList.remove('done');
+  document.getElementById('dot-'+current).classList.add('active');
+  document.getElementById('t-fill').style.width=Math.round(((current-1)/total)*100)+'%';
+  document.getElementById('t-pct').textContent='Étape '+current+' sur '+total;
+  document.getElementById('formulaire').scrollIntoView({behavior:'smooth',block:'start'});
+}
 
-    document.getElementById('form-wrap').style.display = 'none';
-    document.querySelector('.t-progress').style.display = 'none';
-    document.getElementById('t-success').classList.add('show');
-    document.getElementById('formulaire').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+function toggleCheck(el){el.classList.toggle('on')}
 
-  function toggleFaq(el) {
-    const item = el.parentElement;
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  }
+const WEBHOOK='https://formsubmit.co/ajax/mmountagad1@gmail.com';
 
-  const spinStyle = document.createElement('style');
-  spinStyle.textContent = '@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';
-  document.head.appendChild(spinStyle);
+async function submitForm(){
+  if(!validate(6))return;
+  const btn=document.querySelector('.btn-submit');
+  btn.disabled=true;
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="animation:spin 1s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Envoi en cours…';
+  const auths=Array.from(document.querySelectorAll('.f-auth-item.on')).map(el=>el.querySelector('.f-auth-title').textContent);
+  const checks=Array.from(document.querySelectorAll('.f-check.on')).map(el=>el.querySelector('.f-check-label').textContent);
+  const payload={
+    nom:document.getElementById('f-nom').value.trim(),
+    email:document.getElementById('f-email').value.trim(),
+    projet:document.getElementById('f-projet').value.trim(),
+    role:document.getElementById('f-role').value,
+    url:document.getElementById('f-url').value.trim(),
+    description:document.getElementById('f-desc').value.trim(),
+    probleme:document.getElementById('f-probleme').value.trim(),
+    clients:document.getElementById('f-clients').value.trim(),
+    objectif:document.getElementById('f-objectif').value,
+    cta:document.getElementById('f-cta').value.trim(),
+    action:document.getElementById('f-action').value.trim(),
+    defi:document.getElementById('f-defi').value.trim(),
+    question:document.getElementById('f-question').value.trim(),
+    priorite:document.getElementById('f-priorite').value.trim(),
+    axes:checks.join(', '),
+    autorisations:auths.join(', '),
+    soumis_le:new Date().toLocaleString('fr-FR')
+  };
+  try{
+    await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)});
+  }catch(e){console.error(e)}
+  document.getElementById('s-projet').textContent=payload.projet;
+  document.getElementById('s-url').textContent=payload.url;
+  document.getElementById('s-email').textContent=payload.email;
+  document.getElementById('form-wrap').style.display='none';
+  document.querySelector('.t-progress').style.display='none';
+  document.getElementById('t-success').classList.add('show');
+  document.getElementById('formulaire').scrollIntoView({behavior:'smooth',block:'start'});
+}
 
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3500);
-  }
+function toggleFaq(el){
+  const item=el.parentElement;const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+  if(!isOpen)item.classList.add('open');
+}
 
-  document.querySelectorAll('.f-input, .f-select, .f-textarea').forEach(el => {
-    el.addEventListener('input', () => el.classList.remove('err'));
-  });
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+document.querySelectorAll('.f-input,.f-select,.f-textarea').forEach(el=>{
+  el.addEventListener('input',()=>el.classList.remove('err'));
+});
 </script>
 </body>
 </html>
-<--install-extension redeploy -->
-<--install-extension redeploy -->
-<--install-extension redeploy -->
-<--install-extension redeploy -->
