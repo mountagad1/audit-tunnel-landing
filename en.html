@@ -1,1096 +1,767 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="icon" type="image/png" href="/favicon.png">
-<title>AI Audit — Free Expert Landing Page Analysis</title>
-<meta name="description" content="A human expert powered by AI analyzes your landing page in depth — copywriting, UX, conversion, positioning. Free. Open to all founders." />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
-<link rel="alternate" hreflang="fr" href="https://audit-tunnel-landing.vercel.app/">
-<link rel="alternate" hreflang="en" href="https://audit-tunnel-landing.vercel.app/en.html">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Audit.ai — Free landing page analysis</title>
+<meta name="description" content="A human expert assisted by AI analyzes your landing page. Copywriting, UX, conversion. Free."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --ink:#0a0a0f;
-  --ink-muted:#52525f;
-  --ink-faint:#9898a8;
-  --surface:#f8f7f5;
-  --surface-2:#f0ede8;
-  --surface-3:#e4dfd7;
-  --accent:#c8522a;
-  --accent-light:#f5ede8;
-  --accent-dark:#9e3d1c;
-  --ai:#5b4fcf;
-  --ai-light:#eeedfb;
-  --ai-dark:#3d3499;
-  --glow-accent:rgba(200,82,42,0.15);
-  --glow-ai:rgba(91,79,207,0.12);
-  --border:rgba(10,10,15,0.08);
-  --border-strong:rgba(10,10,15,0.16);
-  --radius:6px;
-  --radius-lg:16px;
-  --radius-xl:24px;
-  --font-display:'Instrument Serif',serif;
-  --font-body:'DM Sans',sans-serif;
-  --ease:cubic-bezier(0.4,0,0.2,1);
-  --ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+  --bg:#fafafa;--bg2:#f4f3f0;--bg3:#eceae4;
+  --ink:#0a0a0f;--ink2:#44444f;--ink3:#888898;
+  --accent:#c8522a;--al:rgba(200,82,42,.08);--am:rgba(200,82,42,.15);
+  --ai:#5546d4;
+  --bd:rgba(10,10,15,.07);--bd2:rgba(10,10,15,.12);
+  --ss:0 1px 3px rgba(10,10,15,.04),0 4px 16px rgba(10,10,15,.06);
+  --sm:0 4px 24px rgba(10,10,15,.08),0 1px 4px rgba(10,10,15,.04);
+  --sl:0 12px 48px rgba(10,10,15,.12),0 2px 8px rgba(10,10,15,.06);
+  --r:12px;--r2:20px;--r3:999px;
+  --serif:'Instrument Serif',serif;--sans:'Inter',sans-serif;
+  --ease:cubic-bezier(.4,0,.2,1);--spring:cubic-bezier(.34,1.56,.64,1);
 }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:var(--font-body);background:var(--surface);color:var(--ink);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
-/* ── CANVAS BACKGROUND ── */
-#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.6}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;background:rgba(250,250,250,.6);backdrop-filter:blur(24px) saturate(1.6);-webkit-backdrop-filter:blur(24px) saturate(1.6);border-bottom:1px solid transparent;transition:border-color .35s,background .35s;gap:8px}
+nav.scrolled{border-bottom-color:var(--bd);background:rgba(250,250,250,.92)}
+.nav-logo{font-family:var(--serif);font-size:19px;letter-spacing:-.03em;color:var(--ink);text-decoration:none;flex-shrink:0}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-link{font-size:13px;font-weight:400;color:var(--ink2);text-decoration:none;padding:6px 16px;border-radius:var(--r3);transition:color .2s,background .2s}
+.nav-link:hover{color:var(--ink);background:rgba(10,10,15,.04)}
+.nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.lang-sw{display:flex;background:rgba(10,10,15,.05);border-radius:var(--r3);padding:3px;gap:2px}
+.lang-a{font-size:12px;font-weight:500;color:var(--ink3);text-decoration:none;padding:4px 10px;border-radius:var(--r3);transition:all .2s}
+.lang-a.on{background:#fff;color:var(--ink);box-shadow:var(--ss)}
+.lang-a:hover:not(.on){color:var(--ink)}
+.btn-nav{font-size:12px;font-weight:500;background:var(--ink);color:#fff;padding:7px 14px;border-radius:var(--r3);text-decoration:none;border:none;cursor:pointer;transition:background .2s,transform .2s;box-shadow:0 2px 8px rgba(10,10,15,.18);white-space:nowrap}
+.btn-nav:hover{background:var(--accent);transform:translateY(-1px)}
 
-/* ── NAV ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 2.5rem;height:64px;
-  background:rgba(248,247,245,0.75);
-  backdrop-filter:blur(20px) saturate(1.4);
-  -webkit-backdrop-filter:blur(20px) saturate(1.4);
-  border-bottom:1px solid var(--border);
-  transition:background 0.3s var(--ease);
-}
-nav.scrolled{background:rgba(248,247,245,0.96)}
-.nav-logo-img{height:32px;width:auto;display:block}
-.nav-right{display:flex;align-items:center;gap:16px}
-.nav-pill{
-  display:inline-flex;align-items:center;gap:6px;
-  background:rgba(91,79,207,0.08);color:var(--ai);
-  font-size:12px;font-weight:500;letter-spacing:0.04em;
-  padding:4px 12px;border-radius:40px;
-  border:1px solid rgba(91,79,207,0.15);
-}
-.nav-pill::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--ai);animation:pulse 2s infinite}
-.nav-cta{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--ink);color:#fff;
-  font-family:var(--font-body);font-size:13px;font-weight:500;
-  padding:8px 18px;border-radius:40px;
-  text-decoration:none;transition:all 0.2s var(--ease);
-  box-shadow:0 2px 12px rgba(10,10,15,0.2);
-}
-.nav-cta:hover{background:var(--accent);transform:translateY(-1px);box-shadow:0 4px 20px rgba(200,82,42,0.3)}
-.lang-switch{
-  display:flex;
-  align-items:center;
-  gap:4px;
-  padding:4px;
-  background:rgba(255,255,255,0.8);
-  border:1px solid rgba(10,10,15,0.08);
-  border-radius:999px;
-  backdrop-filter:blur(8px);
-}
+/* HERO */
+.hero{position:relative;min-height:auto;display:flex;align-items:center;justify-content:center;padding:100px 1.25rem 70px;text-align:center;overflow:hidden;background:var(--bg)}
+#hero-canvas{position:absolute;inset:0;z-index:0;pointer-events:none}
+.hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 72% 62% at 50% 50%,transparent 38%,rgba(250,250,250,.75) 82%)}
+.hero-body{position:relative;z-index:10;max-width:840px;margin:0 auto;width:100%}
 
-.lang-link{
-  text-decoration:none;
-  font-size:12px;
-  font-weight:600;
-  color:#52525f;
-  padding:6px 12px;
-  border-radius:999px;
-  transition:all .2s ease;
-}
+.hero-chip{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--ink2);background:rgba(255,255,255,.88);border:1px solid var(--bd2);padding:5px 14px;border-radius:var(--r3);margin-bottom:1.5rem;box-shadow:var(--ss);backdrop-filter:blur(8px);opacity:0;animation:fadeUp .8s var(--ease) .1s forwards;flex-wrap:wrap;justify-content:center;max-width:100%}
+.chip-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;flex-shrink:0}
+.chip-sep{width:1px;height:10px;background:var(--bd2)}
+.chip-ai{color:var(--ai);font-weight:500}
 
-.lang-link:hover{
-  color:#0a0a0f;
-  background:rgba(10,10,15,0.05);
-}
+.hero h1{font-family:var(--serif);font-size:clamp(36px,8.5vw,96px);line-height:1.04;letter-spacing:-.03em;font-weight:400;color:var(--ink);opacity:0;animation:fadeUp .9s var(--ease) .22s forwards}
+.hero h1 em{font-style:italic;color:var(--accent)}
 
-.lang-link.active{
-  background:#0a0a0f;
-  color:#fff;
-}
+.hero-sub{font-size:clamp(14px,3.8vw,19px);color:var(--ink2);font-weight:300;line-height:1.7;max-width:520px;margin:1.5rem auto 0;opacity:0;animation:fadeUp .9s var(--ease) .34s forwards}
 
-/* ── HERO ── */
-.hero{
-  min-height:100vh;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:120px 2rem 80px;text-align:center;
-  position:relative;overflow:hidden;z-index:1;
-}
-.hero-glow{
-  position:absolute;inset:0;z-index:0;
-  background:
-    radial-gradient(ellipse 70% 60% at 15% 35%,rgba(200,82,42,0.07) 0%,transparent 65%),
-    radial-gradient(ellipse 60% 70% at 85% 65%,rgba(91,79,207,0.07) 0%,transparent 65%),
-    radial-gradient(ellipse 40% 40% at 50% 50%,rgba(200,82,42,0.04) 0%,transparent 60%);
-  pointer-events:none;
-}
-.hero-grid-lines{
-  position:absolute;inset:0;z-index:0;
-  background-image:
-    linear-gradient(rgba(10,10,15,0.03) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(10,10,15,0.03) 1px,transparent 1px);
-  background-size:60px 60px;
-  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 0%,transparent 70%);
-  pointer-events:none;
-}
-.hero-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  background:rgba(255,255,255,0.9);
-  color:var(--ink-muted);
-  font-size:12px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;
-  padding:6px 16px;border-radius:40px;
-  border:1px solid var(--border-strong);
-  margin-bottom:2rem;position:relative;z-index:1;
-  animation:fadeUp 0.7s var(--ease) both;
-  box-shadow:0 2px 16px rgba(10,10,15,0.06);
-  backdrop-filter:blur(8px);
-}
-.badge-dot{
-  display:flex;align-items:center;gap:4px;
-}
-.badge-dot-inner{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
-.badge-sep{width:1px;height:12px;background:var(--border-strong)}
-.badge-ai{color:var(--ai);font-weight:500}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.7)}}
-.hero h1{
-  font-family:var(--font-display);
-  font-size:clamp(44px,7.5vw,96px);
-  line-height:1.03;letter-spacing:-0.035em;
-  color:var(--ink);max-width:960px;
-  position:relative;z-index:1;
-  animation:fadeUp 0.7s var(--ease) 0.1s both;
-}
-.hero h1 em{font-style:italic;color:var(--accent);position:relative}
-.hero h1 em::after{
-  content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--accent),transparent);
-  border-radius:2px;
-}
-.hero-sub{
-  font-size:clamp(16px,2vw,20px);color:var(--ink-muted);
-  max-width:540px;margin:1.75rem auto 0;
-  font-weight:300;line-height:1.75;
-  position:relative;z-index:1;
-  animation:fadeUp 0.7s var(--ease) 0.2s both;
-}
-.hero-actions{
-  display:flex;flex-wrap:wrap;align-items:center;
-  justify-content:center;gap:14px;
-  margin-top:2.75rem;position:relative;z-index:1;
-  animation:fadeUp 0.7s var(--ease) 0.3s both;
-}
-.btn-primary{
-  display:inline-flex;align-items:center;gap:10px;
-  background:var(--ink);color:#fff;
-  font-family:var(--font-body);font-size:15px;font-weight:500;
-  padding:15px 30px;border-radius:50px;
-  text-decoration:none;border:none;cursor:pointer;
-  transition:all 0.25s var(--ease);
-  box-shadow:0 4px 24px rgba(10,10,15,0.25),0 1px 4px rgba(10,10,15,0.1);
-  position:relative;overflow:hidden;
-}
-.btn-primary::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,0.08) 0%,transparent 60%);
-  pointer-events:none;
-}
-.btn-primary:hover{background:var(--accent);transform:translateY(-2px);box-shadow:0 8px 32px rgba(200,82,42,0.35)}
-.btn-primary svg{width:16px;height:16px;transition:transform 0.2s}
+.hero-actions{display:flex;flex-direction:column;align-items:stretch;gap:10px;margin-top:1.75rem;opacity:0;animation:fadeUp .9s var(--ease) .56s forwards;width:100%;max-width:360px;margin-left:auto;margin-right:auto}
+.btn-primary{display:flex;align-items:center;justify-content:center;gap:9px;font-family:var(--sans);font-size:15px;font-weight:500;background:var(--ink);color:#fff;padding:15px 24px;border-radius:var(--r3);text-decoration:none;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(200,82,42,.35),0 1px 4px rgba(10,10,15,.1);transition:background .22s,transform .22s,box-shadow .22s;position:relative;overflow:hidden;width:100%;text-align:center}
+.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.08),transparent 60%)}
+.btn-primary:hover{background:var(--accent);transform:translateY(-2px);box-shadow:0 8px 28px rgba(200,82,42,.38)}
+.btn-primary svg{width:15px;height:15px;transition:transform .2s;flex-shrink:0}
 .btn-primary:hover svg{transform:translateX(3px)}
-.btn-ghost{
-  display:inline-flex;align-items:center;gap:8px;
-  color:var(--ink-muted);font-size:14px;font-weight:400;
-  text-decoration:none;transition:color 0.2s;
-  padding:12px 20px;border-radius:40px;
-  border:1px solid var(--border-strong);
-  background:rgba(255,255,255,0.6);
-  backdrop-filter:blur(8px);
-}
-.btn-ghost:hover{color:var(--ink);background:rgba(255,255,255,0.9)}
-.hero-proof{
-  display:flex;flex-wrap:wrap;align-items:center;
-  justify-content:center;gap:0;
-  margin-top:3rem;position:relative;z-index:1;
-  animation:fadeUp 0.7s var(--ease) 0.4s both;
-  background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);
-  border:1px solid var(--border);border-radius:50px;
-  padding:10px 6px;max-width:fit-content;margin-left:auto;margin-right:auto;
-  box-shadow:0 2px 16px rgba(10,10,15,0.06);
-}
-.proof-item{
-  display:flex;align-items:center;gap:7px;
-  font-size:13px;color:var(--ink-muted);
-  padding:4px 16px;
-  border-right:1px solid var(--border);
-}
-.proof-item:last-child{border-right:none}
-.proof-item svg{width:14px;height:14px;color:var(--accent);flex-shrink:0}
-.hero-scroll{
-  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-  color:var(--ink-faint);font-size:10px;letter-spacing:0.12em;
-  text-transform:uppercase;z-index:1;
-  animation:fadeUp 0.7s var(--ease) 0.7s both;
-}
-.scroll-line{width:1px;height:36px;background:var(--border-strong);animation:scrollPulse 2.5s infinite}
-@keyframes scrollPulse{
-  0%{transform:scaleY(0);transform-origin:top}
-  45%{transform:scaleY(1);transform-origin:top}
-  55%{transform:scaleY(1);transform-origin:bottom}
-  100%{transform:scaleY(0);transform-origin:bottom}
-}
+.btn-ghost{display:flex;align-items:center;justify-content:center;gap:7px;font-size:14px;font-weight:400;color:var(--ink2);padding:13px 20px;border-radius:var(--r3);border:1px solid var(--bd2);background:rgba(255,255,255,.65);backdrop-filter:blur(8px);text-decoration:none;transition:all .2s;width:100%}
+.btn-ghost:hover{color:var(--ink);background:#fff}
 
-/* ── SECTION LABEL ── */
-.section-label{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:6px 16px;
-  background:#fff;color:var(--accent);
-  border-radius:999px;font-size:11px;font-weight:600;
-  letter-spacing:0.12em;text-transform:uppercase;
-  border:1px solid rgba(200,82,42,0.15);
-  box-shadow:0 2px 12px rgba(200,82,42,0.08);
-}
-.section-label::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.hero-proof{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:2rem;background:rgba(255,255,255,.75);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:18px;overflow:hidden;width:100%;max-width:380px;margin-left:auto;margin-right:auto;opacity:0;animation:fadeUp .9s var(--ease) .68s forwards}
+.proof-pill{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11px;color:var(--ink2);padding:9px 10px;border-right:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+.proof-pill:nth-child(2n){border-right:none}
+.proof-pill:nth-last-child(-n+2){border-bottom:none}
+.proof-pill svg{width:10px;height:10px;color:var(--accent);flex-shrink:0}
 
-/* ── WHAT ── */
-.what{padding:120px 2rem;max-width:1100px;margin:0 auto;position:relative;z-index:1}
-.what-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:3.5rem}
-.what-left h2{font-family:var(--font-display);font-size:clamp(32px,4vw,54px);line-height:1.08;letter-spacing:-0.025em}
-.what-left h2 em{font-style:italic;color:var(--accent)}
-.what-left p{margin-top:1.5rem;color:var(--ink-muted);font-size:16px;font-weight:300;line-height:1.8}
-.what-right{display:flex;flex-direction:column;gap:0}
-.audit-item{
-  display:flex;align-items:flex-start;gap:16px;
-  padding:18px 0;border-bottom:1px solid var(--border);
-  transition:all 0.2s var(--ease);cursor:default;
-}
-.audit-item:first-child{border-top:1px solid var(--border)}
-.audit-item:hover{padding-left:6px}
-.audit-num{font-family:var(--font-display);font-style:italic;font-size:16px;color:var(--ink-faint);min-width:28px;padding-top:2px}
-.audit-text strong{font-size:14px;font-weight:500;display:block;margin-bottom:2px}
-.audit-text span{font-size:13px;color:var(--ink-muted)}
+.hero-scroll{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:7px;color:var(--ink3);font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:0;animation:fadeUp .8s var(--ease) 1s forwards}
+.scroll-line{width:1px;height:28px;background:linear-gradient(to bottom,transparent,var(--ink3));animation:scPulse 2.8s infinite}
+@keyframes scPulse{0%{transform:scaleY(0);transform-origin:top;opacity:0}45%{opacity:1}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom;opacity:0}}
 
-/* ── METHODOLOGY ── */
-.method{padding:0 2rem 120px;max-width:1100px;margin:0 auto;position:relative;z-index:1}
-.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-.method-card{
-  background:var(--ink);border-radius:var(--radius-xl);
-  padding:2.5rem;position:relative;overflow:hidden;
-  box-shadow:0 24px 64px rgba(10,10,15,0.3),0 4px 16px rgba(10,10,15,0.15);
+/* CARD TICKER */
+.card-ticker-wrap{
+  position:relative;z-index:10;
+  width:100%;overflow:hidden;
+  margin-top:2rem;
+  mask-image:linear-gradient(90deg,transparent 0%,black 6%,black 94%,transparent 100%);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,black 6%,black 94%,transparent 100%);
+  opacity:0;animation:fadeUp .9s var(--ease) .72s forwards;
 }
-.method-card::before{
-  content:'';position:absolute;top:-60px;right:-60px;
-  width:220px;height:220px;border-radius:50%;
-  background:radial-gradient(circle,rgba(91,79,207,0.25) 0%,transparent 70%);
-  pointer-events:none;
+.card-ticker-track{
+  display:flex;gap:10px;width:max-content;
+  animation:tickerRTL 36s linear infinite;
+  padding:4px 0;
 }
-.method-card::after{
-  content:'';position:absolute;bottom:-40px;left:-40px;
-  width:160px;height:160px;border-radius:50%;
-  background:radial-gradient(circle,rgba(200,82,42,0.15) 0%,transparent 70%);
-  pointer-events:none;
-}
-.method-card-inner{position:relative;z-index:1}
-.method-pill{
-  display:inline-flex;align-items:center;gap:6px;
-  background:rgba(91,79,207,0.18);color:#b8b0f8;
-  font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
-  padding:5px 14px;border-radius:40px;
-  border:1px solid rgba(91,79,207,0.25);
-  margin-bottom:1.5rem;
-}
-.method-pill svg{width:11px;height:11px}
-.method-card h3{
-  font-family:var(--font-display);font-size:30px;
-  color:#fff;line-height:1.15;letter-spacing:-0.025em;
-  margin-bottom:1.25rem;
-}
-.method-card h3 em{font-style:italic;color:#b8b0f8}
-.method-list{list-style:none;display:flex;flex-direction:column;gap:12px}
-.method-list li{
-  display:flex;align-items:flex-start;gap:12px;
-  font-size:13px;color:rgba(255,255,255,0.65);font-weight:300;line-height:1.5;
-}
-.method-list li::before{
-  content:'';width:6px;height:6px;border-radius:50%;
-  background:rgba(184,176,248,0.6);flex-shrink:0;margin-top:6px;
-}
-.method-stack{
-  display:flex;align-items:center;gap:12px;
-  margin-top:2rem;padding-top:1.5rem;
-  border-top:1px solid rgba(255,255,255,0.08);
-}
-.stack-label{font-size:11px;color:rgba(255,255,255,0.25);white-space:nowrap}
-.stack-tags{display:flex;flex-wrap:wrap;gap:6px}
-.stack-tag{
-  font-size:11px;background:rgba(255,255,255,0.07);
-  color:rgba(255,255,255,0.45);border-radius:var(--radius);
-  padding:3px 9px;font-weight:400;
-  border:1px solid rgba(255,255,255,0.06);
-}
-.method-right h2{font-family:var(--font-display);font-size:clamp(30px,3.5vw,48px);line-height:1.1;letter-spacing:-0.025em;margin-top:1rem}
-.method-right h2 em{font-style:italic;color:var(--ai)}
-.method-right p{margin-top:1.25rem;color:var(--ink-muted);font-size:15px;font-weight:300;line-height:1.8}
+.card-ticker-track:hover{animation-play-state:paused}
+@keyframes tickerRTL{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* ── PROCESS ── */
-.process{
-  padding:100px 2rem;
-  background:var(--ink);
-  position:relative;overflow:hidden;z-index:1;
+.tc{
+  display:inline-flex;align-items:center;gap:9px;
+  background:rgba(255,255,255,.9);
+  border-radius:var(--r3);
+  padding:6px 14px 6px 8px;
+  box-shadow:0 2px 12px rgba(10,10,15,.07),inset 0 1px 0 rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  white-space:nowrap;
+  flex-shrink:0;
+  cursor:default;
+  transition:box-shadow .2s;
 }
-.process::before{
-  content:'';position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse 50% 60% at 10% 50%,rgba(91,79,207,0.12) 0%,transparent 60%),
-    radial-gradient(ellipse 40% 50% at 90% 50%,rgba(200,82,42,0.1) 0%,transparent 60%);
-  pointer-events:none;
-}
-.process-grid-lines{
-  position:absolute;inset:0;
-  background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);
-  background-size:48px 48px;
-  mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 20%,transparent 80%);
-  pointer-events:none;
-}
-.process-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1}
-.process-logo{height:64px;width:auto;display:block;margin:0 auto 2rem;filter:brightness(0) invert(1) opacity(0.8)}
-.process-inner .section-label{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);border-color:rgba(255,255,255,0.08);box-shadow:none;margin-bottom:1rem}
-.process-inner .section-label::before{background:rgba(255,255,255,0.4)}
-.process-inner h2{font-family:var(--font-display);font-size:clamp(32px,4vw,54px);line-height:1.1;letter-spacing:-0.025em;margin-top:0.5rem;color:#fff}
-.process-inner h2 em{font-style:italic;color:rgba(200,82,42,0.9)}
-.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;margin-top:3.5rem;background:rgba(255,255,255,0.06);border-radius:var(--radius-xl);overflow:hidden;border:1px solid rgba(255,255,255,0.06)}
-.step-box{
-  background:rgba(255,255,255,0.025);
-  padding:2rem;transition:background 0.25s var(--ease);
-  position:relative;overflow:hidden;
-}
-.step-box::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.08),transparent);
-  opacity:0;transition:opacity 0.25s;
-}
-.step-box:hover{background:rgba(255,255,255,0.06)}
-.step-box:hover::before{opacity:1}
-.step-n{font-family:var(--font-display);font-style:italic;font-size:44px;color:rgba(255,255,255,0.1);line-height:1;margin-bottom:1.25rem}
-.step-box h3{font-size:15px;font-weight:500;color:#fff;margin-bottom:10px}
-.step-box p{font-size:13px;color:rgba(255,255,255,0.45);font-weight:300;line-height:1.65}
+.tc:hover{box-shadow:0 4px 20px rgba(10,10,15,.12)}
+.tc-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tc-icon svg{width:13px;height:13px}
+.tc.g .tc-icon{background:rgba(22,163,74,.1);border:1px solid rgba(22,163,74,.2)}
+.tc.g .tc-icon svg{color:#16a34a}
+.tc.r .tc-icon{background:rgba(220,38,38,.09);border:1px solid rgba(220,38,38,.18)}
+.tc.r .tc-icon svg{color:#dc2626}
+.tc.b .tc-icon{background:rgba(85,70,212,.08);border:1px solid rgba(85,70,212,.18)}
+.tc.b .tc-icon svg{color:var(--ai)}
+.tc.o .tc-icon{background:var(--al);border:1px solid var(--am)}
+.tc.o .tc-icon svg{color:var(--accent)}
+.tc-text strong{font-size:12px;font-weight:600;color:var(--ink);display:block;line-height:1.2}
+.tc-text span{font-size:10px;color:var(--ink3)}
 
-/* ── SOCIAL PROOF ── */
-.proof-section{padding:100px 2rem;background:var(--surface-2);position:relative;z-index:1}
-.proof-inner{max-width:1100px;margin:0 auto}
-.proof-header{text-align:center;margin-bottom:3.5rem}
-.proof-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1px;background:var(--border);border-radius:var(--radius-xl);overflow:hidden;border:1px solid var(--border)}
-.proof-card{background:var(--surface);padding:2rem;transition:background 0.2s}
-.proof-card:hover{background:#fff}
-.proof-stars{display:flex;gap:3px;margin-bottom:1rem}
-.proof-star{width:14px;height:14px;color:var(--accent)}
-.proof-quote{font-size:14px;color:var(--ink);font-weight:300;line-height:1.75;margin-bottom:1.5rem;font-style:italic;opacity:0.85}
-.proof-quote::before{content:'"';color:var(--accent);font-style:normal;font-weight:500;font-size:18px;line-height:0;vertical-align:-4px;margin-right:2px}
-.proof-quote::after{content:'"';color:var(--accent);font-style:normal;font-weight:500;font-size:18px;line-height:0;vertical-align:-4px;margin-left:2px}
-.proof-author{display:flex;align-items:center;gap:10px}
-.proof-avatar{width:36px;height:36px;border-radius:50%;background:var(--surface-3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:var(--ink-muted);flex-shrink:0;border:1px solid var(--border-strong)}
-.proof-name{font-size:13px;font-weight:500}
-.proof-role{font-size:12px;color:var(--ink-faint)}
+/* SECTIONS */
+.section{padding:72px 1.25rem;position:relative;z-index:1}
+.section-inner{max-width:1080px;margin:0 auto}
+.s-lbl{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:var(--al);border:1px solid var(--am);padding:5px 14px;border-radius:var(--r3);margin-bottom:1.25rem}
+.s-lbl::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--accent)}
+.s-h2{font-family:var(--serif);font-size:clamp(28px,5vw,50px);line-height:1.08;letter-spacing:-.032em;font-weight:400;color:var(--ink)}
+.s-h2 em{font-style:italic;color:var(--accent)}
+.s-h2 em.ai{color:var(--ai)}
+.s-p{font-size:15px;font-weight:300;color:var(--ink2);line-height:1.82;margin-top:1.25rem;max-width:480px}
 
-/* ── FAQ ── */
-.faq-section{padding:100px 2rem;max-width:720px;margin:0 auto;position:relative;z-index:1}
-.faq-header{text-align:center;margin-bottom:3.5rem}
-.faq-header h2{font-family:var(--font-display);font-size:clamp(28px,3.5vw,46px);letter-spacing:-0.025em;margin-top:1rem}
-.faq-item{border-top:1px solid var(--border);padding:1.5rem 0}
-.faq-item:last-child{border-bottom:1px solid var(--border)}
-.faq-q{display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:16px;font-size:15px;font-weight:500;color:var(--ink);user-select:none;transition:color 0.2s}
+/* WHAT */
+.what-layout{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;margin-top:3.5rem}
+.audit-grid{display:flex;flex-direction:column;gap:0}
+.audit-row{display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:1px solid var(--bd);transition:padding-left .2s var(--ease);cursor:default}
+.audit-row:first-child{border-top:1px solid var(--bd)}
+.audit-row:hover{padding-left:6px}
+.a-num{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--ink3);min-width:24px;padding-top:2px}
+.a-strong{font-size:13px;font-weight:500;display:block;margin-bottom:1px;color:var(--ink)}
+.a-desc{font-size:12px;color:var(--ink2)}
+
+/* METHOD */
+.method-layout{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;margin-top:3.5rem}
+.method-card{background:var(--ink);border-radius:var(--r2);padding:2.5rem;position:relative;overflow:hidden;box-shadow:0 28px 60px rgba(10,10,15,.28)}
+.method-card::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(85,70,212,.22),transparent 70%)}
+.method-card::after{content:'';position:absolute;bottom:-40px;left:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(200,82,42,.16),transparent 70%)}
+.m-inner{position:relative;z-index:1}
+.m-tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#b8b0f8;background:rgba(85,70,212,.18);border:1px solid rgba(85,70,212,.28);padding:4px 12px;border-radius:var(--r3);margin-bottom:1.25rem}
+.m-h3{font-family:var(--serif);font-size:clamp(22px,4vw,28px);color:#fff;line-height:1.15;letter-spacing:-.025em;margin-bottom:1.25rem}
+.m-h3 em{font-style:italic;color:#b8b0f8}
+.m-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.m-list li{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:rgba(255,255,255,.58);font-weight:300;line-height:1.55}
+.m-list li::before{content:'';width:5px;height:5px;border-radius:50%;background:rgba(184,176,248,.5);flex-shrink:0;margin-top:5px}
+.m-stack{display:flex;align-items:center;gap:10px;margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);flex-wrap:wrap}
+.m-stack-lbl{font-size:10px;color:rgba(255,255,255,.22);white-space:nowrap}
+.m-tags{display:flex;flex-wrap:wrap;gap:5px}
+.m-stag{font-size:10px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.38);padding:2px 9px;border-radius:var(--r);border:1px solid rgba(255,255,255,.06)}
+
+/* PROCESS */
+.process-section{background:var(--ink);overflow:hidden;position:relative}
+.process-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 10% 50%,rgba(85,70,212,.12),transparent 60%),radial-gradient(ellipse 40% 50% at 90% 50%,rgba(200,82,42,.09),transparent 60%)}
+.pgrid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:46px 46px;mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black 20%,transparent 80%)}
+.process-section .section-inner{position:relative;z-index:1}
+.process-section .s-lbl{background:rgba(255,255,255,.06);color:rgba(255,255,255,.45);border-color:rgba(255,255,255,.08)}
+.process-section .s-lbl::before{background:rgba(255,255,255,.35)}
+.p-h2{font-family:var(--serif);font-size:clamp(28px,5vw,50px);line-height:1.08;letter-spacing:-.032em;color:#fff;margin-top:.5rem}
+.p-h2 em{font-style:italic;color:rgba(200,82,42,.85)}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:3rem;background:rgba(255,255,255,.06);border-radius:var(--r2);overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.step-card{background:rgba(255,255,255,.025);padding:1.75rem;transition:background .22s;cursor:default}
+.step-card:hover{background:rgba(255,255,255,.06)}
+.step-n{font-family:var(--serif);font-style:italic;font-size:40px;color:rgba(255,255,255,.08);line-height:1;margin-bottom:1.25rem}
+.step-card h3{font-size:13px;font-weight:500;color:#fff;margin-bottom:8px}
+.step-card p{font-size:12px;color:rgba(255,255,255,.5);font-weight:300;line-height:1.65}
+
+/* PROOF */
+.proof-section{background:var(--bg2)}
+.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border-radius:var(--r2);overflow:hidden;margin-top:3rem}
+.proof-card{background:var(--bg2);padding:1.75rem;transition:background .2s,transform .2s var(--ease);cursor:default}
+.proof-card:hover{background:#fff;transform:translateY(-2px)}
+.proof-stars{display:flex;gap:2px;margin-bottom:1rem}
+.pstar{width:12px;height:12px;color:var(--accent)}
+.proof-q{font-family:var(--serif);font-style:italic;font-size:14px;line-height:1.75;color:var(--ink);opacity:.88;margin-bottom:1.5rem}
+.proof-q::before{content:'\201C';color:var(--accent);font-size:18px;line-height:0;vertical-align:-4px;margin-right:2px}
+.proof-q::after{content:'\201D';color:var(--accent);font-size:18px;line-height:0;vertical-align:-4px;margin-left:2px}
+.proof-author{display:flex;align-items:center;gap:9px}
+.proof-av{width:32px;height:32px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:var(--ink2);flex-shrink:0;border:1px solid var(--bd2)}
+.proof-name{font-size:12px;font-weight:500}
+.proof-role{font-size:11px;color:var(--ink3)}
+
+/* FAQ */
+.faq-wrap{max-width:680px;margin:0 auto;padding:72px 1.25rem}
+.faq-center{text-align:center;margin-bottom:2.5rem}
+.faq-item{border-top:1px solid var(--bd)}
+.faq-item:last-child{border-bottom:1px solid var(--bd)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer;padding:1.25rem 0;font-size:14px;font-weight:500;color:var(--ink);user-select:none;transition:color .2s;line-height:1.5}
 .faq-q:hover{color:var(--accent)}
-.faq-icon{width:22px;height:22px;flex-shrink:0;border-radius:50%;background:var(--surface-2);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;transition:all 0.3s var(--ease)}
-.faq-icon svg{width:10px;height:10px;transition:stroke 0.2s}
-.faq-item.open .faq-icon{transform:rotate(45deg);background:var(--ink);border-color:var(--ink)}
-.faq-item.open .faq-icon svg{stroke:#fff}
+.faq-ico{width:22px;height:22px;border-radius:50%;background:var(--bg2);border:1px solid var(--bd2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .28s var(--ease)}
+.faq-ico svg{width:10px;height:10px}
+.faq-item.open .faq-ico{transform:rotate(45deg);background:var(--ink);border-color:var(--ink)}
+.faq-item.open .faq-ico svg{stroke:#fff}
 .faq-item.open .faq-q{color:var(--accent)}
-.faq-a{max-height:0;overflow:hidden;transition:max-height 0.4s var(--ease),padding 0.3s}
-.faq-item.open .faq-a{max-height:300px;padding-top:14px}
-.faq-a p{font-size:14px;color:var(--ink-muted);font-weight:300;line-height:1.8}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease)}
+.faq-item.open .faq-a{max-height:280px}
+.faq-a p{font-size:13px;font-weight:300;color:var(--ink2);line-height:1.82;padding-bottom:1.25rem}
 
-/* ── TUNNEL ── */
-#formulaire{padding:100px 2rem;max-width:780px;margin:0 auto;position:relative;z-index:1}
-.tunnel-header{text-align:center;margin-bottom:3.5rem}
-.tunnel-header h2{font-family:var(--font-display);font-size:clamp(32px,4vw,54px);line-height:1.1;letter-spacing:-0.025em;margin-top:1rem}
-.tunnel-header h2 em{font-style:italic;color:var(--accent)}
-.tunnel-header p{margin-top:1rem;color:var(--ink-muted);font-size:15px;font-weight:300}
-
-/* Progress */
-.t-progress{margin-bottom:3rem}
-.t-progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.t-progress-steps{display:flex;gap:6px}
-.t-step-dot{
-  width:28px;height:28px;border-radius:50%;
-  border:1.5px solid var(--border-strong);
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:500;color:var(--ink-faint);
-  transition:all 0.35s var(--ease-spring);cursor:default;
-  background:var(--surface);
-}
-.t-step-dot.active{border-color:var(--ink);color:var(--ink);transform:scale(1.1);box-shadow:0 0 0 4px rgba(10,10,15,0.06)}
-.t-step-dot.done{background:var(--ink);border-color:var(--ink);color:#fff}
-.t-pct{font-size:12px;color:var(--ink-faint)}
-.t-bar{height:2px;background:var(--surface-3);border-radius:2px;overflow:hidden}
-.t-fill{height:100%;background:linear-gradient(90deg,var(--ink),var(--accent));border-radius:2px;transition:width 0.6s var(--ease);width:0%}
-
-/* Form sections */
-.t-section{display:none}
-.t-section.active{display:block;animation:fadeUp 0.4s var(--ease) both}
-.t-section-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-xl);padding:2rem;box-shadow:0 4px 24px rgba(10,10,15,0.06)}
-.t-section-head{display:flex;align-items:center;gap:12px;margin-bottom:2rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border)}
-.t-section-icon{width:40px;height:40px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.t-section-icon svg{width:18px;height:18px;color:var(--ink-muted)}
-.t-section-title{font-size:15px;font-weight:500}
-.t-section-sub{font-size:12px;color:var(--ink-faint);margin-top:2px}
-
-/* Fields */
-.f-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.f-field{margin-bottom:1.25rem}
+/* FORM */
+.form-wrap{padding:60px 1.25rem 80px;max-width:780px;margin:0 auto}
+.form-head{text-align:center;margin-bottom:2.5rem}
+.form-head .s-h2{margin-top:.75rem}
+.form-head p{font-size:14px;font-weight:300;color:var(--ink2);margin-top:.875rem}
+.t-prog{margin-bottom:2rem}
+.t-prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.t-dots{display:flex;gap:5px}
+.t-dot{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--bd2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--ink3);transition:all .3s var(--spring);background:var(--bg);flex-shrink:0}
+.t-dot.on{border-color:var(--ink);color:var(--ink);transform:scale(1.1);box-shadow:0 0 0 4px rgba(10,10,15,.05)}
+.t-dot.done{background:var(--ink);border-color:var(--ink);color:#fff}
+.t-pct{font-size:12px;color:var(--ink3);white-space:nowrap}
+.t-bar{height:2px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.t-fill{height:100%;background:linear-gradient(90deg,var(--ink),var(--accent));transition:width .55s var(--ease);width:0%}
+.ts{display:none}
+.ts.on{display:block;animation:fadeUp .38s var(--ease) both}
+.ts-card{background:#fff;border:1px solid var(--bd);border-radius:var(--r2);padding:1.5rem;box-shadow:var(--ss)}
+.ts-head{display:flex;align-items:center;gap:10px;margin-bottom:1.75rem;padding-bottom:1.25rem;border-bottom:1px solid var(--bd)}
+.ts-icon{width:36px;height:36px;border-radius:var(--r);background:var(--bg2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ts-icon svg{width:16px;height:16px;color:var(--ink2)}
+.ts-title{font-size:14px;font-weight:500}
+.ts-sub{font-size:11px;color:var(--ink3);margin-top:1px}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.f-field{margin-bottom:1.125rem}
 .f-field:last-child{margin-bottom:0}
-.f-label{display:block;font-size:13px;font-weight:500;color:var(--ink);margin-bottom:6px}
-.f-label .req{color:var(--accent);margin-left:2px}
-.f-hint{font-size:12px;color:var(--ink-faint);margin-bottom:8px;line-height:1.5}
-.f-input,.f-select,.f-textarea{
-  width:100%;padding:12px 14px;
-  border:1px solid var(--border-strong);
-  border-radius:var(--radius);
-  background:#fff;color:var(--ink);
-  font-family:var(--font-body);font-size:14px;font-weight:300;
-  outline:none;transition:all 0.2s var(--ease);
-  -webkit-appearance:none;appearance:none;
-}
-.f-input::placeholder,.f-textarea::placeholder{color:var(--ink-faint)}
-.f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(10,10,15,0.06)}
-.f-input.err,.f-select.err,.f-textarea.err{border-color:#d63031;box-shadow:0 0 0 3px rgba(214,48,49,0.08)}
-.f-textarea{resize:vertical;min-height:90px;line-height:1.65}
-.f-select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a5a5a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
-
-/* Checkboxes */
-.f-checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px;margin-top:8px}
-.f-check{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 12px;border:1px solid var(--border-strong);
-  border-radius:var(--radius);cursor:pointer;
-  transition:all 0.18s var(--ease);user-select:none;
-  background:#fff;
-}
-.f-check:hover{border-color:var(--ink);background:var(--surface)}
-.f-check.on{border-color:var(--ink);background:var(--ink)}
-.f-check.on .f-check-box{background:transparent;border-color:rgba(255,255,255,0.35)}
-.f-check.on .f-check-box::after{opacity:1}
-.f-check.on .f-check-label{color:#fff}
-.f-check-box{width:15px;height:15px;border-radius:4px;border:1px solid var(--border-strong);flex-shrink:0;position:relative;background:var(--surface-2)}
-.f-check-box::after{content:'';position:absolute;top:2px;left:4px;width:5px;height:8px;border:1.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);opacity:0;transition:opacity 0.15s}
-.f-check-label{font-size:12px;font-weight:400;color:var(--ink)}
-
-/* Auth toggles */
-.f-auth{display:flex;flex-direction:column;gap:10px;margin-top:8px}
-.f-auth-item{
-  display:flex;align-items:flex-start;gap:14px;
-  padding:14px 16px;border:1px solid var(--border-strong);
-  border-radius:var(--radius);cursor:pointer;
-  transition:all 0.18s var(--ease);user-select:none;background:#fff;
-}
+.f-lbl{display:block;font-size:12px;font-weight:500;color:var(--ink);margin-bottom:5px}
+.req{color:var(--accent);margin-left:2px}
+.f-inp,.f-sel,.f-ta{width:100%;padding:11px 12px;border:1px solid var(--bd2);border-radius:var(--r);background:#fff;color:var(--ink);font-family:var(--sans);font-size:16px;font-weight:300;outline:none;-webkit-appearance:none;appearance:none;transition:border-color .2s,box-shadow .2s;-webkit-text-size-adjust:100%}
+.f-inp::placeholder,.f-ta::placeholder{color:var(--ink3)}
+.f-inp:focus,.f-sel:focus,.f-ta:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(10,10,15,.05)}
+.f-inp.err,.f-sel.err,.f-ta.err{border-color:var(--accent);box-shadow:0 0 0 3px rgba(200,82,42,.07)}
+.f-ta{resize:vertical;min-height:80px;line-height:1.65}
+.f-sel{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.f-checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:7px;margin-top:7px}
+.f-chk{display:flex;align-items:center;gap:8px;padding:10px 11px;border:1px solid var(--bd2);border-radius:var(--r);cursor:pointer;user-select:none;background:#fff;transition:all .16s;-webkit-tap-highlight-color:transparent}
+.f-chk:hover{border-color:var(--ink);background:var(--bg)}
+.f-chk.on{border-color:var(--ink);background:var(--ink)}
+.f-chk.on .f-cb{background:transparent;border-color:rgba(255,255,255,.3)}
+.f-chk.on .f-cb::after{opacity:1}
+.f-chk.on .f-cl{color:#fff}
+.f-cb{width:14px;height:14px;border-radius:3px;border:1px solid var(--bd2);flex-shrink:0;position:relative;background:var(--bg2)}
+.f-cb::after{content:'';position:absolute;top:1px;left:3px;width:6px;height:8px;border:1.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);opacity:0;transition:opacity .13s}
+.f-cl{font-size:12px;font-weight:400;color:var(--ink)}
+.f-auth{display:flex;flex-direction:column;gap:8px;margin-top:7px}
+.f-auth-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border:1px solid var(--bd2);border-radius:var(--r);cursor:pointer;user-select:none;background:#fff;transition:all .16s;-webkit-tap-highlight-color:transparent}
 .f-auth-item:hover{border-color:var(--ink)}
-.f-auth-item.on{border-color:#1a7a4a;background:#f0faf5}
-.f-auth-item.on .f-toggle{background:#1a7a4a;border-color:#1a7a4a}
-.f-auth-item.on .f-toggle::after{opacity:1}
-.f-auth-item.on .f-auth-title{color:#0d4a2a}
-.f-auth-item.on .f-auth-sub{color:#1a7a4a}
-.f-toggle{width:18px;height:18px;border-radius:4px;flex-shrink:0;border:1px solid var(--border-strong);position:relative;margin-top:2px;background:var(--surface-2);transition:all 0.15s}
-.f-toggle::after{content:'';position:absolute;top:2px;left:5px;width:6px;height:9px;border:1.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);opacity:0;transition:opacity 0.15s}
+.f-auth-item.on{border-color:#16a34a;background:rgba(22,163,74,.04)}
+.f-auth-item.on .f-tog{background:#16a34a;border-color:#16a34a}
+.f-auth-item.on .f-tog::after{opacity:1}
+.f-tog{width:16px;height:16px;border-radius:3px;flex-shrink:0;border:1px solid var(--bd2);position:relative;margin-top:1px;background:var(--bg2);transition:all .13s}
+.f-tog::after{content:'';position:absolute;top:1px;left:4px;width:6px;height:9px;border:1.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);opacity:0;transition:opacity .13s}
 .f-auth-title{font-size:13px;font-weight:500;color:var(--ink)}
-.f-auth-sub{font-size:12px;color:var(--ink-faint);margin-top:3px;line-height:1.45}
-
-/* Navigation */
-.t-nav{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-.btn-back{display:inline-flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;font-family:var(--font-body);font-size:14px;color:var(--ink-muted);transition:color 0.2s;padding:0}
+.f-auth-sub{font-size:12px;color:var(--ink3);margin-top:2px;font-weight:300;line-height:1.45}
+.t-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.75rem;padding-top:1.5rem;border-top:1px solid var(--bd);gap:10px}
+.btn-back{display:inline-flex;align-items:center;gap:5px;background:none;border:none;cursor:pointer;font-family:var(--sans);font-size:13px;color:var(--ink2);transition:color .2s;padding:10px 0;-webkit-tap-highlight-color:transparent;flex-shrink:0}
 .btn-back:hover{color:var(--ink)}
-.btn-next{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border:none;cursor:pointer;font-family:var(--font-body);font-size:14px;font-weight:500;padding:12px 26px;border-radius:40px;transition:all 0.2s var(--ease);box-shadow:0 2px 12px rgba(10,10,15,0.2)}
-.btn-next:hover{background:var(--accent);transform:translateY(-1px);box-shadow:0 4px 20px rgba(200,82,42,0.3)}
-.btn-next svg{width:14px;height:14px;transition:transform 0.2s}
+.btn-next{display:inline-flex;align-items:center;justify-content:center;gap:7px;background:var(--ink);color:#fff;border:none;cursor:pointer;font-family:var(--sans);font-size:14px;font-weight:500;padding:12px 22px;border-radius:var(--r3);transition:all .2s;box-shadow:0 2px 10px rgba(10,10,15,.18);flex:1;max-width:200px;-webkit-tap-highlight-color:transparent}
+.btn-next:hover{background:var(--accent);transform:translateY(-1px)}
+.btn-next svg{width:13px;height:13px;transition:transform .2s;flex-shrink:0}
 .btn-next:hover svg{transform:translateX(3px)}
-.btn-submit{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#fff;border:none;cursor:pointer;font-family:var(--font-body);font-size:15px;font-weight:500;padding:14px 32px;border-radius:40px;transition:all 0.2s var(--ease);box-shadow:0 4px 20px rgba(200,82,42,0.3)}
-.btn-submit:hover{background:var(--accent-dark);transform:translateY(-1px);box-shadow:0 6px 28px rgba(200,82,42,0.4)}
-.btn-submit svg{width:16px;height:16px}
+.btn-sub{display:flex;align-items:center;justify-content:center;gap:9px;background:var(--accent);color:#fff;border:none;cursor:pointer;font-family:var(--sans);font-size:15px;font-weight:500;padding:14px 24px;border-radius:var(--r3);box-shadow:0 4px 16px rgba(200,82,42,.28);transition:all .2s;flex:1;-webkit-tap-highlight-color:transparent}
+.btn-sub:hover{background:#a83e1d;transform:translateY(-1px);box-shadow:0 6px 22px rgba(200,82,42,.36)}
+.t-close{background:var(--bg2);border-radius:var(--r);padding:1.25rem 1.5rem;margin-bottom:1.5rem;border-left:2px solid var(--accent)}
+.t-close p{font-size:13px;font-weight:300;color:var(--ink2);line-height:1.78;font-style:italic}
+.t-ok{display:none;text-align:center;padding:3.5rem 1.25rem;animation:fadeUp .5s var(--ease) both}
+.t-ok.show{display:block}
+.t-ok-icon{width:64px;height:64px;border-radius:50%;background:var(--al);border:1px solid var(--am);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;box-shadow:0 6px 24px rgba(200,82,42,.12)}
+.t-ok-icon svg{width:26px;height:26px;color:var(--accent)}
+.t-ok h3{font-family:var(--serif);font-size:clamp(28px,7vw,38px);letter-spacing:-.025em;margin-bottom:.875rem}
+.t-ok p{font-size:14px;font-weight:300;color:var(--ink2);line-height:1.78;max-width:400px;margin:0 auto}
+.t-ok-meta{margin:1.75rem auto 0;padding:1.25rem;background:var(--bg2);border-radius:var(--r);text-align:left;max-width:400px}
+.t-ok-meta p{font-size:12px;color:var(--ink2);margin-bottom:4px;word-break:break-word}
+.t-ok-meta strong{color:var(--ink)}
 
-/* Closing */
-.t-closing{background:var(--surface-2);border-radius:var(--radius-lg);padding:1.5rem 1.75rem;margin-bottom:2rem;border-left:3px solid var(--accent)}
-.t-closing p{font-size:13px;color:var(--ink-muted);line-height:1.75;font-style:italic}
-.t-closing p+p{margin-top:8px}
+/* FOOTER */
+footer{padding:1.5rem 1.25rem;border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.footer-copy{font-size:11px;color:var(--ink3);line-height:1.5}
+.footer-links{display:flex;gap:0}
+.footer-link{font-size:12px;color:var(--ink3);text-decoration:none;padding:4px 12px;transition:color .2s}
+.footer-link:hover{color:var(--ink)}
 
-/* Success */
-.t-success{display:none;text-align:center;padding:5rem 2rem;animation:fadeUp 0.5s var(--ease) both}
-.t-success.show{display:block}
-.success-icon{width:72px;height:72px;border-radius:50%;background:var(--accent-light);border:1px solid rgba(200,82,42,0.2);display:flex;align-items:center;justify-content:center;margin:0 auto 1.75rem;box-shadow:0 8px 32px rgba(200,82,42,0.15)}
-.success-icon svg{width:30px;height:30px;color:var(--accent)}
-.t-success h3{font-family:var(--font-display);font-size:40px;letter-spacing:-0.025em;margin-bottom:1rem}
-.t-success p{color:var(--ink-muted);font-size:15px;font-weight:300;line-height:1.75;max-width:440px;margin:0 auto}
-.t-success-details{margin:2rem auto 0;padding:1.5rem;background:var(--surface-2);border-radius:var(--radius-lg);text-align:left;max-width:440px}
-.t-success-details p{font-size:13px;color:var(--ink-muted);margin-bottom:6px}
-.t-success-details p:last-child{margin-bottom:0}
-.t-success-details strong{color:var(--ink)}
-
-/* ── FOOTER ── */
-footer{padding:3rem 2rem;border-top:1px solid var(--border);text-align:center;font-size:13px;color:var(--ink-faint);position:relative;z-index:1}
-
-/* ── UTILS ── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0a0a0f;color:#fff;font-size:13px;font-weight:500;padding:12px 22px;border-radius:40px;opacity:0;pointer-events:none;transition:opacity 0.3s var(--ease);z-index:200;white-space:nowrap;box-shadow:0 4px 20px rgba(10,10,15,0.25)}
+/* UTILS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.65)}}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease),transform .85s var(--ease)}
+.reveal.vis{opacity:1;transform:translateY(0)}
+.reveal-l{opacity:0;transform:translateX(-24px);transition:opacity .85s var(--ease),transform .85s var(--ease)}
+.reveal-l.vis{opacity:1;transform:translateX(0)}
+.reveal-r{opacity:0;transform:translateX(24px);transition:opacity .85s var(--ease),transform .85s var(--ease)}
+.reveal-r.vis{opacity:1;transform:translateX(0)}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:12px;font-weight:500;padding:10px 20px;border-radius:var(--r3);opacity:0;pointer-events:none;transition:opacity .28s;z-index:999;white-space:nowrap;box-shadow:var(--sm);max-width:90vw;text-align:center;white-space:normal}
 .toast.show{opacity:1}
 
-/* ── LIQUID / MOTION EFFECTS ── */
-.liquid-blob{
-  position:absolute;border-radius:50%;filter:blur(60px);
-  opacity:0.5;pointer-events:none;will-change:transform;
+/* =====================
+   TABLET 901–1100px
+   ===================== */
+@media(min-width:901px){
+  nav{padding:0 2.5rem;height:62px}
+  .btn-nav{font-size:13px;padding:8px 20px}
+  .hero{padding:120px 2rem 80px}
+  .hero h1{font-size:clamp(48px,7.5vw,96px)}
+  .hero-actions{flex-direction:row;align-items:center;justify-content:center;max-width:none;width:auto;margin-top:2rem}
+  .btn-primary,.btn-ghost{width:auto;flex:none}
+  .hero-proof{display:flex;flex-wrap:wrap;grid-template-columns:none;border-radius:var(--r3);padding:8px 4px;max-width:none}
+  .proof-pill{border-right:1px solid var(--bd);border-bottom:none !important}
+  .proof-pill:last-child{border-right:none}
+  .section{padding:100px 2rem}
+  .faq-wrap{padding:100px 2rem}
+  .form-wrap{padding:80px 2rem 100px}
+  .ts-card{padding:2rem}
+  .steps-grid{grid-template-columns:repeat(4,1fr)}
+  .proof-grid{grid-template-columns:repeat(3,1fr)}
+  .what-layout{grid-template-columns:1fr 1fr}
+  .method-layout{grid-template-columns:1fr 1fr}
 }
-.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.8s var(--ease),transform 0.8s var(--ease)}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.reveal-delay-1{transition-delay:0.1s}
-.reveal-delay-2{transition-delay:0.2s}
-.reveal-delay-3{transition-delay:0.3s}
 
-@media(max-width:768px){
-  nav{padding:0 1.25rem}
-  .nav-pill{display:none}
-  .what-grid,.method-grid{grid-template-columns:1fr;gap:48px}
+/* =====================
+   MOBILE ≤900px
+   ===================== */
+@media(max-width:900px){
+  .nav-links{display:none}
+  .what-layout,.method-layout{grid-template-columns:1fr;gap:40px}
+  .what-layout .reveal-r{transform:translateX(0);opacity:0}
+  .proof-grid{grid-template-columns:1fr}
+  .steps-grid{grid-template-columns:1fr 1fr}
   .f-row{grid-template-columns:1fr}
-  .hero h1{font-size:40px}
-  .hero-proof{flex-direction:column;gap:0;border-radius:16px}
-  .proof-item{border-right:none;border-bottom:1px solid var(--border)}
-  .proof-item:last-child{border-bottom:none}
-  #formulaire{padding:60px 1.25rem}
-  .what,.method,.faq-section{padding-left:1.25rem;padding-right:1.25rem}
-  .process{padding:60px 1.25rem}
-  .proof-section{padding:60px 1.25rem}
-  .t-section-card{padding:1.5rem}
+  .method-card{padding:1.75rem}
+}
+
+/* =====================
+   MOBILE ≤600px
+   ===================== */
+@media(max-width:600px){
+  .steps-grid{grid-template-columns:1fr}
+  .f-checks{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
+  .f-inp,.f-sel,.f-ta{font-size:16px}
+  .t-nav{gap:8px}
+  .btn-next{max-width:none}
+}
+
+/* =====================
+   VERY SMALL ≤380px
+   ===================== */
+@media(max-width:380px){
+  .nav-right{gap:4px}
+  .lang-sw{display:none}
+  .btn-nav{padding:7px 12px;font-size:11px}
+  .hero-chip{font-size:10px;gap:5px}
+  .chip-sep{display:none}
+  .t-dots{gap:3px}
+  .t-dot{width:24px;height:24px;font-size:10px}
+  .f-checks{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
-
-<!-- NAV -->
 <nav id="main-nav">
-  <a class="nav-logo" href="#">
-    <img src="/logo.png" alt="Audit.ai Logo" class="nav-logo-img" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'font-family:var(--font-display);font-size:20px;letter-spacing:-0.02em\'>Audit<span style=\'color:var(--accent)\'>.</span>ai</span>'">
-  </a>
+  <a class="nav-logo" href="#">Audit<span>.</span>ai</a>
+  <div class="nav-links">
+    <a class="nav-link" href="#service">Service</a>
+    <a class="nav-link" href="#methode">Method</a>
+    <a class="nav-link" href="#faq">FAQ</a>
+  </div>
   <div class="nav-right">
-    <div class="nav-pill"><div class="badge-dot-inner" style="width:5px;height:5px;border-radius:50%;background:var(--ai);animation:pulse 2s infinite;display:inline-block;margin-right:6px"></div>AI Expert</div>
-<div class="lang-switch">
-  <a href="/en.html" class="lang-link active">EN</a>
-  <a href="/" class="lang-link">FR</a>
-</div>
-    <a class="nav-cta" href="#formulaire">
-      Submit my site
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
+    <div class="lang-sw">
+      <a href="/en.html" class="lang-a on">EN</a>
+      <a href="/" class="lang-a">FR</a>
+    </div>
+    <a href="#formulaire" class="btn-nav">Submit my site</a>
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-grid-lines"></div>
+  <canvas id="hero-canvas"></canvas>
 
-  <div class="hero-badge">
-    <span class="badge-dot"><span class="badge-dot-inner"></span>Human Expert</span>
-    <span class="badge-sep"></span>
-    <span class="badge-ai">× Artificial Intelligence</span>
+  <div class="hero-body">
+    <div class="hero-chip">
+      <span class="chip-dot"></span>
+      Human expert
+      <span class="chip-sep"></span>
+      <span class="chip-ai">× Artificial intelligence</span>
+    </div>
+    <h1>Your landing page analyzed<br>by an expert, <em>assisted</em> by AI.</h1>
+    <p class="hero-sub">A senior human perspective combined with the power of AI to dissect your site — copywriting, UX, conversion, positioning. Free. Honest. Actionable.</p>
+
+    <div class="card-ticker-wrap">
+      <div class="card-ticker-track">
+        <div class="tc g"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div class="tc-text"><strong>+18% conversion</strong><span>Average result post-audit</span></div></div>
+        <div class="tc r"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 18 8.5 10.5 13.5 15.5 23 6"/><polyline points="17 18 23 18 23 12"/></svg></div><div class="tc-text"><strong>82% bounce rate</strong><span>Unclear hero message</span></div></div>
+        <div class="tc b"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M3 12h3m12 0h3M12 3v3m0 12v3"/></svg></div><div class="tc-text"><strong>UX Score 50/100</strong><span>3 critical friction points</span></div></div>
+        <div class="tc r"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 18 8.5 10.5 13.5 15.5 23 6"/><polyline points="17 18 23 18 23 12"/></svg></div><div class="tc-text"><strong>Conversion 1.2%</strong><span>Before audit</span></div></div>
+        <div class="tc o"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><div class="tc-text"><strong>Retention 34%</strong><span>Week 1 post-launch</span></div></div>
+        <div class="tc g"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div class="tc-text"><strong>CTR +23%</strong><span>After copywriting overhaul</span></div></div>
+        <div class="tc b"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div class="tc-text"><strong>Mobile 64/100</strong><span>4 broken breakpoints</span></div></div>
+        <div class="tc g"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div><div class="tc-text"><strong>LCP 3.2s → 1.4s</strong><span>Performance optimized</span></div></div>
+        <div class="tc r"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg></div><div class="tc-text"><strong>Abandonment 71%</strong><span>Form too long</span></div></div>
+        <div class="tc o"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div><div class="tc-text"><strong>SEO — h1 missing</strong><span>Missed opportunity</span></div></div>
+        <!-- duplicate for seamless loop -->
+        <div class="tc g"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div class="tc-text"><strong>+18% conversion</strong><span>Average result post-audit</span></div></div>
+        <div class="tc r"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 18 8.5 10.5 13.5 15.5 23 6"/><polyline points="17 18 23 18 23 12"/></svg></div><div class="tc-text"><strong>82% bounce rate</strong><span>Unclear hero message</span></div></div>
+        <div class="tc b"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M3 12h3m12 0h3M12 3v3m0 12v3"/></svg></div><div class="tc-text"><strong>UX Score 50/100</strong><span>3 critical friction points</span></div></div>
+        <div class="tc r"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 18 8.5 10.5 13.5 15.5 23 6"/><polyline points="17 18 23 18 23 12"/></svg></div><div class="tc-text"><strong>Conversion 1.2%</strong><span>Before audit</span></div></div>
+        <div class="tc o"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><div class="tc-text"><strong>Retention 34%</strong><span>Week 1 post-launch</span></div></div>
+        <div class="tc g"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div class="tc-text"><strong>CTR +23%</strong><span>After copywriting overhaul</span></div></div>
+        <div class="tc b"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div class="tc-text"><strong>Mobile 64/100</strong><span>4 broken breakpoints</span></div></div>
+        <div class="tc g"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div><div class="tc-text"><strong>LCP 3.2s → 1.4s</strong><span>Performance optimized</span></div></div>
+        <div class="tc r"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg></div><div class="tc-text"><strong>Abandonment 71%</strong><span>Form too long</span></div></div>
+        <div class="tc o"><div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div><div class="tc-text"><strong>SEO — h1 missing</strong><span>Missed opportunity</span></div></div>
+      </div>
+    </div>
+
+    <div class="hero-actions">
+      <a class="btn-primary" href="#formulaire">
+        Submit my project for free
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a class="btn-ghost" href="#service">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+        How does it work?
+      </a>
+    </div>
+    <div class="hero-proof">
+      <div class="proof-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>100% free</div>
+      <div class="proof-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Expert + AI</div>
+      <div class="proof-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>All projects</div>
+      <div class="proof-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Actionable feedback</div>
+    </div>
   </div>
+  <div class="hero-scroll"><div class="scroll-line"></div>Scroll</div>
+</section>
 
-  <h1>Your landing page analyzed<br>by an expert, <em>powered</em> by AI.</h1>
-  <p class="hero-sub">A senior human perspective combined with the power of AI to dissect your site in depth — copywriting, UX, conversion, positioning. Free. Honest. Actionable.</p>
-
-  <div class="hero-actions">
-    <a class="btn-primary" href="#formulaire">
-      Submit my project for free
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
-    <a class="btn-ghost" href="#comment">
-      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
-      How does it work?
-    </a>
-  </div>
-
-  <div class="hero-proof">
-    <div class="proof-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-      100% free
+<section class="section" id="service">
+  <div class="section-inner">
+    <div class="reveal"><span class="s-lbl">What you receive</span></div>
+    <div class="what-layout">
+      <div class="reveal-l d1">
+        <h2 class="s-h2">Not a bot.<br>An expert <em>armed</em> with AI.</h2>
+        <p class="s-p">AI analyzes your site in seconds across dozens of criteria. The human expert contextualizes, prioritizes, and writes the recommendations that truly matter. The best of both worlds.</p>
+      </div>
     </div>
-    <div class="proof-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-      Human Expert + IA
-    </div>
-    <div class="proof-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-      All projects welcome
-    </div>
-    <div class="proof-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-      Actionable feedback
-    </div>
-  </div>
-
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
-    Scroll
   </div>
 </section>
 
-<!-- WHAT -->
-<section class="what" id="comment">
-  <div class="reveal"><div class="section-label">What you receive</div></div>
-  <div class="what-grid">
-    <div class="what-left reveal reveal-delay-1">
-      <h2>Not a robot.<br>An expert <em>armed</em> with AI.</h2>
-      <p>AI analyzes your site in seconds across dozens of criteria. The human expert contextualizes, prioritizes, and writes the recommendations that truly matter for your situation. The best of both worlds.</p>
-    </div>
-    <div class="what-right reveal reveal-delay-2">
-      <div class="audit-item"><span class="audit-num">01</span><div class="audit-text"><strong>Offer clarity</strong><span>Is your message understood in 5 seconds?</span></div></div>
-      <div class="audit-item"><span class="audit-num">02</span><div class="audit-text"><strong>Copywriting & proposition de valeur</strong><span>What you say, and how you say it.</span></div></div>
-      <div class="audit-item"><span class="audit-num">03</span><div class="audit-text"><strong>UX & design</strong><span>Friction, readability, visual hierarchy.</span></div></div>
-      <div class="audit-item"><span class="audit-num">04</span><div class="audit-text"><strong>Conversion funnel</strong><span>CTAs, user journey, friction points.</span></div></div>
-      <div class="audit-item"><span class="audit-num">05</span><div class="audit-text"><strong>Positionnement & crédibilité</strong><span>Trust, social proof, differentiation.</span></div></div>
-      <div class="audit-item"><span class="audit-num">06</span><div class="audit-text"><strong>Mobile, SEO & performance</strong><span>What your visitors actually experience.</span></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- METHODOLOGY -->
-<section class="method">
-  <div class="method-grid">
-    <div class="method-card reveal">
-      <div class="method-card-inner">
-        <div class="method-pill">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2zM12 8v4l3 3"/></svg>
-          Methodology
-        </div>
-        <h3>AI scans.<br>The expert <em>understands.</em></h3>
-        <ul class="method-list">
-          <li>Automatic analysis of 40+ criteria in real time</li>
-          <li>Detection of missing conversion patterns</li>
-          <li>Comparison with industry benchmarks</li>
-          <li>The expert validates, contextualizes and prioritizes each point</li>
-          <li>Recommendations written in plain language, not jargon</li>
-          <li>Concrete suggestions you can apply tomorrow</li>
-        </ul>
-        <div class="method-stack">
-          <span class="stack-label">Powered by</span>
-          <div class="stack-tags">
-            <span class="stack-tag">ChatGPT</span>
-            <span class="stack-tag">Claude</span>
-            <span class="stack-tag">Gemini</span>
-            <span class="stack-tag">CRO Expert</span>
-            <span class="stack-tag">UX Review</span>
+<section class="section" id="methode">
+  <div class="section-inner">
+    <div class="method-layout">
+      <div class="reveal-l d1">
+        <div class="method-card">
+          <div class="m-inner">
+            <div class="m-tag">Methodology</div>
+            <h3 class="m-h3">AI scans.<br>The expert <em>understands.</em></h3>
+            <ul class="m-list">
+              <li>Automated analysis of 40+ criteria in real time</li>
+              <li>Detection of missing conversion patterns</li>
+              <li>Industry benchmarks applied to your context</li>
+              <li>Expert validates, contextualizes and prioritizes every point</li>
+              <li>Recommendations in plain language, not jargon</li>
+              <li>Suggestions you can act on starting tomorrow</li>
+            </ul>
+            <div class="m-stack">
+              <span class="m-stack-lbl">Powered by</span>
+              <div class="m-tags">
+                <span class="m-stag">GPT-4o</span><span class="m-stag">Claude</span><span class="m-stag">Gemini</span><span class="m-stag">CRO Expert</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="method-right reveal reveal-delay-1">
-      <div class="section-label">Why it's different</div>
-      <h2>Human expertise,<br>at the speed of <em>AI.</em></h2>
-      <p>A CRO consultant alone sees a lot — but analyzes your site with their own biases and blind spots. AI alone generates generic feedback without understanding your context.</p>
-      <p style="margin-top:1.25rem">Combined, they produce a more complete, faster, and more relevant analysis than either could achieve alone.</p>
-    </div>
-  </div>
-</section>
-
-<!-- PROCESS -->
-<section class="process" id="comment2">
-  <div class="process-grid-lines"></div>
-  <div class="process-inner">
-    <div style="text-align:center;margin-bottom:2rem" class="reveal">
-      <img src="/logo.png" alt="Audit.ai Logo" class="process-logo" onerror="this.style.display='none'">
-      <div class="section-label">How it works</div>
-    </div>
-    <h2 style="text-align:center;color:#fff;margin-top:1rem" class="reveal reveal-delay-1">4 steps. <em>Expert + AI.</em> Free.</h2>
-    <div class="steps-grid reveal reveal-delay-2">
-      <div class="step-box">
-        <div class="step-n">01</div>
-        <h3>You submit</h3>
-        <p>Fill out the form in 10 minutes — URL, context, challenges, goals. The more precise you are, the more relevant your audit.</p>
-      </div>
-      <div class="step-box">
-        <div class="step-n">02</div>
-        <h3>AI pre-analysis</h3>
-        <p>Upon receipt, our AI models scan your site across 40+ criteria: structure, copywriting, CTAs, mobile, speed, message consistency.</p>
-      </div>
-      <div class="step-box">
-        <div class="step-n">03</div>
-        <h3>Expert review</h3>
-        <p>A human expert reviews the analysis, contextualizes it to your industry, cuts the noise, and writes truly useful recommendations.</p>
-      </div>
-      <div class="step-box">
-        <div class="step-n">04</div>
-        <h3>You receive the audit</h3>
-        <p>A clear, prioritized, actionable report. Each point includes the identified issue, its impact, and a concrete solution to apply.</p>
+      <div class="reveal-r d2">
+        <span class="s-lbl">Why this is different</span>
+        <h2 class="s-h2" style="margin-top:.75rem">Human expertise,<br>the speed of <em style="color:var(--ai)">AI.</em></h2>
+        <p class="s-p">A solo CRO consultant analyzes with their own blind spots. AI alone generates generic feedback. Together, they produce a more complete, faster, and more relevant analysis.</p>
+        <p class="s-p">Every recommendation is prioritized by its real impact on your conversion rate.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SOCIAL PROOF -->
-<section class="proof-section">
-  <div class="proof-inner">
-    <div class="proof-header reveal">
-      <div class="section-label">What they say</div>
+<section class="section process-section" id="comment-ca-marche">
+  <div class="pgrid"></div>
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center">
+      <span class="s-lbl">How it works</span>
+      <h2 class="p-h2" style="margin-top:.75rem">4 steps. <em>Expert + AI.</em> Free.</h2>
     </div>
-    <div class="proof-grid reveal reveal-delay-1">
-      <div class="proof-card">
-        <div class="proof-stars">
-          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
-        <p class="proof-quote">Within 48h I had a complete audit with insights my team had never spotted. The expert + AI combo is truly on another level.</p>
-        <div class="proof-author">
-          <div class="proof-avatar">S</div>
-          <div><div class="proof-name">Sarah M.</div><div class="proof-role">Founder, B2B SaaS</div></div>
-        </div>
+    <div class="steps-grid reveal d1">
+      <div class="step-card"><div class="step-n">01</div><h3>You submit</h3><p>10-minute form — URL, context, challenges, goals.</p></div>
+      <div class="step-card"><div class="step-n">02</div><h3>AI pre-analyzes</h3><p>40+ criteria scanned: copy, CTA, mobile, speed, message.</p></div>
+      <div class="step-card"><div class="step-n">03</div><h3>Expert validates</h3><p>Contextualizes, filters the noise, writes the recommendations.</p></div>
+      <div class="step-card"><div class="step-n">04</div><h3>You receive</h3><p>A clear, prioritized, actionable report. Problem → impact → solution.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section proof-section">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;margin-bottom:.5rem"><span class="s-lbl">What they say</span></div>
+    <div class="proof-grid">
+      <div class="proof-card reveal d1">
+        <div class="proof-stars"><svg class="pstar" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="pstar" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="pstar" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="pstar" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="pstar" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <p class="proof-q">Within 48 hours I had a complete audit with points my team had never noticed. The expert + AI combo is truly a different level.</p>
+        <div class="proof-author"><div class="proof-av">S</div><div><div class="proof-name">Sarah M.</div><div class="proof-role">Founder, B2B SaaS</div></div></div>
       </div>
-      <div class="proof-card">
-        <div class="proof-stars">
-          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
-        <p class="proof-quote">This isn't just a list of problems. It's a real roadmap. I applied 3 recommendations in a week and my conversion rate jumped 18%.</p>
-        <div class="proof-author">
-          <div class="proof-avatar">K</div>
-          <div><div class="proof-name">Karim B.</div><div class="proof-role">Co-founder, Marketplace</div></div>
-        </div>
+      <div class="proof-card reveal d2">
+        <div class="proof-stars"><svg class="pstar" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="pstar" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="pstar" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="pstar" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="pstar" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <p class="proof-q">It wasn't just a list of problems. It was a real roadmap. 3 recommendations implemented in one week and +18% conversion.</p>
+        <div class="proof-author"><div class="proof-av">K</div><div><div class="proof-name">Karim B.</div><div class="proof-role">Co-founder, Marketplace</div></div></div>
       </div>
-      <div class="proof-card">
-        <div class="proof-stars">
-          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="proof-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
-        <p class="proof-quote">I thought my hero section was clear. The audit showed me nobody understood what we did until the 3rd paragraph. Game changer.</p>
-        <div class="proof-author">
-          <div class="proof-avatar">L</div>
-          <div><div class="proof-name">Lucie D.</div><div class="proof-role">CEO, App mobile</div></div>
-        </div>
+      <div class="proof-card reveal d3">
+        <div class="proof-stars"><svg class="pstar" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="pstar" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="pstar" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="pstar" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="pstar" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <p class="proof-q">I thought my hero was clear. The audit showed me that nobody understood what we did before the third paragraph. Total game changer.</p>
+        <div class="proof-author"><div class="proof-av">L</div><div><div class="proof-name">Lucie D.</div><div class="proof-role">CEO, Mobile app</div></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FAQ -->
-<section class="faq-section">
-  <div class="faq-header reveal">
-    <div class="section-label">Frequently asked questions</div>
-    <h2>Everything you want to know</h2>
+<div class="faq-wrap" id="faq">
+  <div class="faq-center reveal">
+    <span class="s-lbl">Frequently asked questions</span>
+    <h2 class="s-h2" style="margin-top:.75rem">Everything you want to know</h2>
   </div>
-  <div class="reveal reveal-delay-1">
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        Is it really free? Is there a catch?
-        <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
-      </div>
-      <div class="faq-a"><p>Aucun piège. L'audit est 100% free, sans engagement, sans carte bancaire. L'initiative existe pour aider les fondateurs à progresser et pour démontrer la valeur d'un audit expert assisté par l'IA.</p></div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        Who conducts the audit — a human or AI?
-        <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
-      </div>
-      <div class="faq-a"><p>Both. AI (GPT-4o + Claude) automatically analyzes your site across 40+ objective criteria. A human expert then reviews the analysis, contextualizes it to your industry, and writes the final recommendations. You get AI speed and human judgment.</p></div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        My project is still in development — can I still submit?
-        <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
-      </div>
-      <div class="faq-a"><p>Absolutely. In fact, it's often the best time to get an audit — before over-investing in one direction. All projects are welcome, regardless of stage.</p></div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        How long until I receive my audit?
-        <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
-      </div>
-      <div class="faq-a"><p>Usually within 48 to 72 business hours. AI processes your submission immediately; the human expert finalizes the report in the following days.</p></div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        Can I opt out of having my site featured in a video?
-        <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
-      </div>
-      <div class="faq-a"><p>Yes, absolutely. The permissions in the form are independent — you can receive the audit without authorizing public sharing. Your analysis remains confidential if you prefer.</p></div>
-    </div>
+  <div class="reveal d1">
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is it really free? Is there a catch?<div class="faq-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div></div><div class="faq-a"><p>No catch. 100% free, no commitment, no credit card required. This initiative exists to help founders and demonstrate the value of an expert AI audit.</p></div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Who carries out the audit — a human or an AI?<div class="faq-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div></div><div class="faq-a"><p>Both. AI (GPT-4o + Claude) analyzes across 40+ criteria. A human expert then reviews, contextualizes, and writes the final recommendations.</p></div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">My project is still being built — can I submit?<div class="faq-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div></div><div class="faq-a"><p>Absolutely. It's often the best time — before you invest too much in one direction. All projects are welcome at any stage.</p></div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How long until I receive the audit?<div class="faq-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div></div><div class="faq-a"><p>Usually within 48 to 72 business hours. AI processes immediately; the expert finalizes in the following days.</p></div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I opt out of public sharing?<div class="faq-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div></div><div class="faq-a"><p>Yes, absolutely. Each permission is independent. Your analysis remains confidential if you choose.</p></div></div>
   </div>
-</section>
+</div>
 
-<!-- TUNNEL FORMULAIRE -->
-<section id="formulaire">
-  <div class="tunnel-header reveal">
-    <div class="section-label">Free application</div>
-    <h2>Submit my<br><em>project for audit</em></h2>
+<div class="form-wrap" id="formulaire">
+  <div class="form-head reveal">
+    <span class="s-lbl">Free application</span>
+    <h2 class="s-h2">Submit my project<br>for <em>audit</em></h2>
     <p>Fill in the 6 sections below. All projects are welcome.</p>
   </div>
-
-  <div class="t-progress">
-    <div class="t-progress-top">
-      <div class="t-progress-steps">
-        <div class="t-step-dot active" id="dot-1">1</div>
-        <div class="t-step-dot" id="dot-2">2</div>
-        <div class="t-step-dot" id="dot-3">3</div>
-        <div class="t-step-dot" id="dot-4">4</div>
-        <div class="t-step-dot" id="dot-5">5</div>
-        <div class="t-step-dot" id="dot-6">6</div>
+  <div class="t-prog">
+    <div class="t-prog-top">
+      <div class="t-dots">
+        <div class="t-dot on" id="dot-1">1</div><div class="t-dot" id="dot-2">2</div><div class="t-dot" id="dot-3">3</div>
+        <div class="t-dot" id="dot-4">4</div><div class="t-dot" id="dot-5">5</div><div class="t-dot" id="dot-6">6</div>
       </div>
       <span class="t-pct" id="t-pct">Step 1 of 6</span>
     </div>
     <div class="t-bar"><div class="t-fill" id="t-fill"></div></div>
   </div>
-
   <div id="form-wrap">
-    <!-- S1 -->
-    <div class="t-section active" id="s1">
-      <div class="t-section-card">
-        <div class="t-section-head">
-          <div class="t-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
-          <div><div class="t-section-title">Introduction</div><div class="t-section-sub">Tell us who you are</div></div>
-        </div>
-        <div class="f-row">
-          <div class="f-field"><label class="f-label">First and last name <span class="req">*</span></label><input class="f-input" id="f-nom" type="text" placeholder="John Smith" /></div>
-          <div class="f-field"><label class="f-label">Adresse email <span class="req">*</span></label><input class="f-input" id="f-email" type="email" placeholder="john@myproject.com" /></div>
-        </div>
-        <div class="f-row">
-          <div class="f-field"><label class="f-label">Project name <span class="req">*</span></label><input class="f-input" id="f-projet" type="text" placeholder="e.g. Koopon, Dumini…" /></div>
-          <div class="f-field">
-            <label class="f-label">Your role <span class="req">*</span></label>
-            <select class="f-select" id="f-role">
-              <option value="">Select…</option>
-              <option>Founder / Co-founder</option><option>CEO / Director</option>
-              <option>Product Manager</option><option>Solo developer</option>
-              <option>Designer</option><option>Marketer</option>
-              <option>Content creator</option><option>Freelancer</option><option>Other</option>
-            </select>
-          </div>
-        </div>
-        <div class="t-nav"><span></span><button class="btn-next" onclick="goTo(2)">Continue<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
-      </div>
-    </div>
 
-    <!-- S2 -->
-    <div class="t-section" id="s2">
-      <div class="t-section-card">
-        <div class="t-section-head">
-          <div class="t-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a10 10 0 1 1 0 20A10 10 0 0 1 12 2z"/><path d="M12 8v4l3 3"/></svg></div>
-          <div><div class="t-section-title">Your project</div><div class="t-section-sub">Help us understand what you're building</div></div>
-        </div>
-        <div class="f-field"><label class="f-label">Your website URL <span class="req">*</span></label><div class="f-hint">The main page you want audited.</div><input class="f-input" id="f-url" type="url" placeholder="https://monprojet.com" /></div>
-        <div class="f-field"><label class="f-label">Describe your project in 2–3 sentences <span class="req">*</span></label><div class="f-hint">What do you do, for whom, and how?</div><textarea class="f-textarea" id="f-desc" placeholder="e.g. We help freelancers manage their expenses in 30 seconds using AI receipt recognition…"></textarea></div>
-        <div class="f-field"><label class="f-label">What concrete problem do you solve? <span class="req">*</span></label><div class="f-hint">Describe the pain or frustration of your target customer.</div><textarea class="f-textarea" id="f-probleme" rows="2" placeholder="e.g. Freelancers waste hours manually entering their expenses…"></textarea></div>
-        <div class="f-field"><label class="f-label">Who are your ideal customers? <span class="req">*</span></label><div class="f-hint">Be specific: industry, size, behavior, main pain point.</div><textarea class="f-textarea" id="f-clients" rows="2" placeholder="e.g. Freelance developers aged 25–40, monthly billing…"></textarea></div>
-        <div class="t-nav"><button class="btn-back" onclick="goTo(1)"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button><button class="btn-next" onclick="goTo(3)">Continue<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
+    <!-- STEP 1 -->
+    <div class="ts on" id="s1"><div class="ts-card">
+      <div class="ts-head"><div class="ts-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><div><div class="ts-title">Introduction</div><div class="ts-sub">Tell us who you are</div></div></div>
+      <div class="f-row">
+        <div class="f-field"><label class="f-lbl">First and last name<span class="req">*</span></label><input class="f-inp" id="f-nom" type="text" placeholder="Jane Smith" autocomplete="name"/></div>
+        <div class="f-field"><label class="f-lbl">Email<span class="req">*</span></label><input class="f-inp" id="f-email" type="email" placeholder="jane@myproject.com" autocomplete="email"/></div>
       </div>
-    </div>
+      <div class="f-row">
+        <div class="f-field"><label class="f-lbl">Project name<span class="req">*</span></label><input class="f-inp" id="f-projet" type="text" placeholder="e.g. Koopon…"/></div>
+        <div class="f-field"><label class="f-lbl">Your role<span class="req">*</span></label><select class="f-sel" id="f-role"><option value="">Select…</option><option>Founder / Co-founder</option><option>CEO / Director</option><option>Product Manager</option><option>Solo developer</option><option>Designer</option><option>Marketer</option><option>Freelancer</option><option>Other</option></select></div>
+      </div>
+      <div class="t-nav"><span></span><button class="btn-next" onclick="goTo(2)">Continue<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
+    </div></div>
 
-    <!-- S3 -->
-    <div class="t-section" id="s3">
-      <div class="t-section-card">
-        <div class="t-section-head">
-          <div class="t-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
-          <div><div class="t-section-title">Your landing page</div><div class="t-section-sub">Your page objective and main CTA</div></div>
-        </div>
-        <div class="f-field"><label class="f-label">Main objective of this page <span class="req">*</span></label><select class="f-select" id="f-objectif"><option value="">Select…</option><option>Sign-up / account creation</option><option>Email capture / lead magnet</option><option>Direct sale</option><option>Appointment booking</option><option>Download (app, extension…)</option><option>Awareness / discovery</option><option>Other</option></select></div>
-        <div class="f-field"><label class="f-label">Your main CTA <span class="req">*</span></label><div class="f-hint">The most important button or link on your page.</div><input class="f-input" id="f-cta" type="text" placeholder='e.g. "Try for free", "Book a demo"…' /></div>
-        <div class="f-field"><label class="f-label">What do you hope visitors will do?</label><div class="f-hint">Describe the ideal action and what should convince them.</div><textarea class="f-textarea" id="f-action" rows="2" placeholder="e.g. I want them to sign up for the free trial, but I feel the price is holding them back…"></textarea></div>
-        <div class="t-nav"><button class="btn-back" onclick="goTo(2)"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button><button class="btn-next" onclick="goTo(4)">Continue<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
-      </div>
-    </div>
+    <!-- STEP 2 -->
+    <div class="ts" id="s2"><div class="ts-card">
+      <div class="ts-head"><div class="ts-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a10 10 0 1 1 0 20A10 10 0 0 1 12 2z"/><path d="M12 8v4l3 3"/></svg></div><div><div class="ts-title">Your project</div><div class="ts-sub">What you're building</div></div></div>
+      <div class="f-field"><label class="f-lbl">Your site URL<span class="req">*</span></label><input class="f-inp" id="f-url" type="url" placeholder="https://myproject.com" inputmode="url" autocomplete="url"/></div>
+      <div class="f-field"><label class="f-lbl">Describe your project in 2–3 sentences<span class="req">*</span></label><textarea class="f-ta" id="f-desc" placeholder="We help freelancers manage their expense reports…"></textarea></div>
+      <div class="f-field"><label class="f-lbl">What concrete problem do you solve?<span class="req">*</span></label><textarea class="f-ta" id="f-probleme" rows="2" placeholder="Freelancers waste hours manually entering expenses…"></textarea></div>
+      <div class="f-field"><label class="f-lbl">Who are your ideal customers?<span class="req">*</span></label><textarea class="f-ta" id="f-clients" rows="2" placeholder="Freelance developers aged 25–40…"></textarea></div>
+      <div class="t-nav"><button class="btn-back" onclick="goTo(1)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button><button class="btn-next" onclick="goTo(3)">Continue<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
+    </div></div>
 
-    <!-- S4 -->
-    <div class="t-section" id="s4">
-      <div class="t-section-card">
-        <div class="t-section-head">
-          <div class="t-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg></div>
-          <div><div class="t-section-title">Your challenges</div><div class="t-section-sub">What's blocking you today</div></div>
-        </div>
-        <div class="f-field"><label class="f-label">Your biggest challenge today <span class="req">*</span></label><div class="f-hint">Low conversion, unclear message, traffic that doesn't convert… Be direct.</div><textarea class="f-textarea" id="f-defi" placeholder="e.g. Lots of visitors but nobody signs up. I don't know if it's the price, the message, or the page…"></textarea></div>
-        <div class="f-field"><label class="f-label">Question for the expert</label><div class="f-hint">A specific question = more useful feedback.</div><textarea class="f-textarea" id="f-question" rows="2" placeholder="e.g. Is my value proposition clear within the first 5 seconds?"></textarea></div>
-        <div class="f-field"><label class="f-label">If you could improve just one thing…</label><textarea class="f-textarea" id="f-priorite" rows="2" placeholder="e.g. The hero clarity. I think people don't understand what we do when they land on the page…"></textarea></div>
-        <div class="t-nav"><button class="btn-back" onclick="goTo(3)"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button><button class="btn-next" onclick="goTo(5)">Continue<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
-      </div>
-    </div>
+    <!-- STEP 3 -->
+    <div class="ts" id="s3"><div class="ts-card">
+      <div class="ts-head"><div class="ts-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div><div class="ts-title">Your landing page</div><div class="ts-sub">Goal and main CTA</div></div></div>
+      <div class="f-field"><label class="f-lbl">Primary goal<span class="req">*</span></label><select class="f-sel" id="f-objectif"><option value="">Select…</option><option>Sign-up / account creation</option><option>Email capture</option><option>Direct sale</option><option>Booking a meeting</option><option>Download</option><option>Brand awareness</option><option>Other</option></select></div>
+      <div class="f-field"><label class="f-lbl">Your main CTA<span class="req">*</span></label><input class="f-inp" id="f-cta" type="text" placeholder='"Try for free"…'/></div>
+      <div class="f-field"><label class="f-lbl">What do you want visitors to do?</label><textarea class="f-ta" id="f-action" rows="2" placeholder="I want them to sign up…"></textarea></div>
+      <div class="t-nav"><button class="btn-back" onclick="goTo(2)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button><button class="btn-next" onclick="goTo(4)">Continue<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
+    </div></div>
 
-    <!-- S5 -->
-    <div class="t-section" id="s5">
-      <div class="t-section-card">
-        <div class="t-section-head">
-          <div class="t-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
-          <div><div class="t-section-title">Analysis areas</div><div class="t-section-sub">Select at least one area</div></div>
-        </div>
-        <div class="f-field">
-          <label class="f-label">Which aspects would you like analyzed? <span class="req">*</span></label>
-          <div class="f-checks" id="checks">
-            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Marketing</span></div>
-            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Value proposition</span></div>
-            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Copywriting</span></div>
-            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Design</span></div>
-            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">UX</span></div>
-            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Mobile</span></div>
-            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">SEO</span></div>
-            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Performance</span></div>
-            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Conversion</span></div>
-            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Pricing</span></div>
-            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Product structure</span></div>
-            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Full-stack / tech</span></div>
-            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">IA</span></div>
-            <div class="f-check" onclick="toggleCheck(this)"><div class="f-check-box"></div><span class="f-check-label">Branding</span></div>
-          </div>
-        </div>
-        <div class="t-nav"><button class="btn-back" onclick="goTo(4)"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button><button class="btn-next" onclick="goTo(6)">Continue<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
-      </div>
-    </div>
+    <!-- STEP 4 -->
+    <div class="ts" id="s4"><div class="ts-card">
+      <div class="ts-head"><div class="ts-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg></div><div><div class="ts-title">Your challenges</div><div class="ts-sub">What's blocking you today</div></div></div>
+      <div class="f-field"><label class="f-lbl">Your biggest difficulty<span class="req">*</span></label><textarea class="f-ta" id="f-defi" placeholder="Lots of visitors arrive but nobody signs up…"></textarea></div>
+      <div class="f-field"><label class="f-lbl">A question for the expert</label><textarea class="f-ta" id="f-question" rows="2" placeholder="Is my value proposition clear in 5 seconds?"></textarea></div>
+      <div class="f-field"><label class="f-lbl">If you could improve one thing…</label><textarea class="f-ta" id="f-priorite" rows="2" placeholder="The clarity of my hero section…"></textarea></div>
+      <div class="t-nav"><button class="btn-back" onclick="goTo(3)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button><button class="btn-next" onclick="goTo(5)">Continue<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
+    </div></div>
 
-    <!-- S6 -->
-    <div class="t-section" id="s6">
-      <div class="t-section-card">
-        <div class="t-section-head">
-          <div class="t-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <div><div class="t-section-title">Permissions</div><div class="t-section-sub">Final step</div></div>
-        </div>
-        <div class="t-closing">
-          <p>Every entrepreneur starts somewhere. No project is perfect — and that's exactly why this initiative exists.</p>
-          <p>The goal isn't to judge your project, but to give you honest, actionable, and constructive feedback. Every analysis is an opportunity to grow. We all learn together.</p>
-        </div>
-        <div class="f-field">
-          <label class="f-label">Check the permissions you grant</label>
-          <div class="f-auth">
-            <div class="f-auth-item" onclick="this.classList.toggle('on')"><div class="f-toggle"></div><div><div class="f-auth-title">Public site analysis</div><div class="f-auth-sub">I authorize the public analysis of my website and landing page.</div></div></div>
-            <div class="f-auth-item" onclick="this.classList.toggle('on')"><div class="f-toggle"></div><div><div class="f-auth-title">Use in a video</div><div class="f-auth-sub">I authorize the use of feedback in a video, live stream, or educational content.</div></div></div>
-            <div class="f-auth-item" onclick="this.classList.toggle('on')"><div class="f-toggle"></div><div><div class="f-auth-title">Display of project name</div><div class="f-auth-sub">I authorize my project name to be mentioned during the analysis.</div></div></div>
-          </div>
-        </div>
-        <div class="t-nav"><button class="btn-back" onclick="goTo(5)"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button><button class="btn-submit" onclick="submitForm()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>Submit my application</button></div>
+    <!-- STEP 5 -->
+    <div class="ts" id="s5"><div class="ts-card">
+      <div class="ts-head"><div class="ts-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div><div class="ts-title">Analysis focus</div><div class="ts-sub">Select at least one area</div></div></div>
+      <label class="f-lbl">Which aspects do you want analyzed?<span class="req">*</span></label>
+      <div class="f-checks" id="checks">
+        <div class="f-chk" onclick="this.classList.toggle('on')"><div class="f-cb"></div><span class="f-cl">Marketing</span></div>
+        <div class="f-chk" onclick="this.classList.toggle('on')"><div class="f-cb"></div><span class="f-cl">Value prop.</span></div>
+        <div class="f-chk" onclick="this.classList.toggle('on')"><div class="f-cb"></div><span class="f-cl">Copywriting</span></div>
+        <div class="f-chk" onclick="this.classList.toggle('on')"><div class="f-cb"></div><span class="f-cl">Design</span></div>
+        <div class="f-chk" onclick="this.classList.toggle('on')"><div class="f-cb"></div><span class="f-cl">UX</span></div>
+        <div class="f-chk" onclick="this.classList.toggle('on')"><div class="f-cb"></div><span class="f-cl">Mobile</span></div>
+        <div class="f-chk" onclick="this.classList.toggle('on')"><div class="f-cb"></div><span class="f-cl">SEO</span></div>
+        <div class="f-chk" onclick="this.classList.toggle('on')"><div class="f-cb"></div><span class="f-cl">Performance</span></div>
+        <div class="f-chk" onclick="this.classList.toggle('on')"><div class="f-cb"></div><span class="f-cl">Conversion</span></div>
+        <div class="f-chk" onclick="this.classList.toggle('on')"><div class="f-cb"></div><span class="f-cl">Pricing</span></div>
+        <div class="f-chk" onclick="this.classList.toggle('on')"><div class="f-cb"></div><span class="f-cl">Product</span></div>
+        <div class="f-chk" onclick="this.classList.toggle('on')"><div class="f-cb"></div><span class="f-cl">AI</span></div>
+        <div class="f-chk" onclick="this.classList.toggle('on')"><div class="f-cb"></div><span class="f-cl">Branding</span></div>
       </div>
-    </div>
+      <div class="t-nav"><button class="btn-back" onclick="goTo(4)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button><button class="btn-next" onclick="goTo(6)">Continue<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
+    </div></div>
+
+    <!-- STEP 6 -->
+    <div class="ts" id="s6"><div class="ts-card">
+      <div class="ts-head"><div class="ts-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><div class="ts-title">Permissions</div><div class="ts-sub">Last step</div></div></div>
+      <div class="t-close"><p>Every founder starts somewhere. The goal isn't to judge — it's to deliver honest, actionable feedback.</p></div>
+      <label class="f-lbl">Check the permissions you grant</label>
+      <div class="f-auth">
+        <div class="f-auth-item" onclick="this.classList.toggle('on')"><div class="f-tog"></div><div><div class="f-auth-title">Public site analysis</div><div class="f-auth-sub">I allow public analysis of my landing page.</div></div></div>
+        <div class="f-auth-item" onclick="this.classList.toggle('on')"><div class="f-tog"></div><div><div class="f-auth-title">Use in a video</div><div class="f-auth-sub">I allow use in educational content.</div></div></div>
+        <div class="f-auth-item" onclick="this.classList.toggle('on')"><div class="f-tog"></div><div><div class="f-auth-title">Mention of project name</div><div class="f-auth-sub">I allow my project name to be mentioned during the analysis.</div></div></div>
+      </div>
+      <div class="t-nav"><button class="btn-back" onclick="goTo(5)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button><button class="btn-sub" onclick="submitForm()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>Send my application</button></div>
+    </div></div>
+
   </div>
-
-  <!-- SUCCESS -->
-  <div class="t-success" id="t-success">
-    <div class="success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+  <div class="t-ok" id="t-ok">
+    <div class="t-ok-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6L9 17l-5-5"/></svg></div>
     <h3>Application received!</h3>
-    <p>Thank you for taking the time to submit your project. Your audit is on its way. You'll receive feedback at the address provided.</p>
-    <div class="t-success-details">
+    <p>Thank you for submitting your project. Your audit is on its way — you'll receive feedback at the address provided within 48–72 hours.</p>
+    <div class="t-ok-meta">
       <p><strong>Project:</strong> <span id="s-projet"></span></p>
-      <p><strong>Website:</strong> <span id="s-url"></span></p>
+      <p><strong>Site:</strong> <span id="s-url"></span></p>
       <p><strong>Contact:</strong> <span id="s-email"></span></p>
     </div>
   </div>
-</section>
+</div>
 
 <footer>
-  <p>Audit.ai — Human Expert assisté par l'IA &nbsp;·&nbsp; Tous les projets sont les bienvenus &nbsp;·&nbsp; Fait avec soin</p>
+  <span class="footer-copy">Audit.ai — Human expert assisted by AI · Made with care</span>
+  <div class="footer-links">
+    <a href="/" class="footer-link">FR</a>
+    <a href="#formulaire" class="footer-link">Submit →</a>
+  </div>
 </footer>
 
 <div class="toast" id="toast"></div>
 
 <script>
-/* ── LIQUID BACKGROUND CANVAS ── */
+/* HERO CANVAS */
 (function(){
-  const canvas=document.getElementById('bg-canvas');
+  const canvas=document.getElementById('hero-canvas');
+  if(!canvas)return;
   const ctx=canvas.getContext('2d');
-  let W,H,blobs;
-  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
-  function initBlobs(){
-    blobs=[
-      {x:W*0.15,y:H*0.3,r:Math.min(W,H)*0.28,vx:0.12,vy:0.08,color:'rgba(200,82,42,0.055)'},
-      {x:W*0.85,y:H*0.6,r:Math.min(W,H)*0.32,vx:-0.1,vy:0.09,color:'rgba(91,79,207,0.05)'},
-      {x:W*0.5,y:H*0.85,r:Math.min(W,H)*0.22,vx:0.07,vy:-0.11,color:'rgba(200,82,42,0.035)'},
-      {x:W*0.75,y:H*0.1,r:Math.min(W,H)*0.2,vx:-0.09,vy:0.06,color:'rgba(91,79,207,0.04)'},
-    ]
+  const SYMS=['Σ','π','Δ','∫','λ','∞','f(x)','P(A)','P(B)','AI','CTR','UX','SEO','LTV','CAC','ROAS','A/B','μ','σ','∂','∇'];
+  const ORBS=[
+    {px:.12,py:.28,pr:.55,rgb:[200,82,42],sp:.00013},
+    {px:.88,py:.68,pr:.48,rgb:[85,70,212], sp:.00016},
+    {px:.50,py:.06,pr:.32,rgb:[200,82,42],sp:.00010},
+    {px:.50,py:.96,pr:.36,rgb:[150,130,230],sp:.00014},
+    {px:.14,py:.80,pr:.28,rgb:[200,82,42],sp:.00018},
+    {px:.86,py:.22,pr:.26,rgb:[85,70,212], sp:.00013},
+  ];
+  let W,H,t=0,syms=[];
+  function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;initSyms()}
+  function initSyms(){
+    syms=[];const n=Math.max(10,Math.floor(W/90));
+    for(let i=0;i<n;i++)syms.push({
+      ch:SYMS[Math.floor(Math.random()*SYMS.length)],
+      x:Math.random()*W,y:Math.random()*H,
+      sz:11+Math.random()*18,
+      op:.018+Math.random()*.022,
+      vy:-.028-Math.random()*.048,
+      ph:Math.random()*Math.PI*2,
+      cp:Math.random()*Math.PI*2
+    });
   }
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    blobs.forEach(b=>{
-      b.x+=b.vx;b.y+=b.vy;
-      if(b.x<-b.r||b.x>W+b.r)b.vx*=-1;
-      if(b.y<-b.r||b.y>H+b.r)b.vy*=-1;
-      const g=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);
-      g.addColorStop(0,b.color);
-      g.addColorStop(1,'transparent');
-      ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
-      ctx.fillStyle=g;ctx.fill();
+  function draw(ts){
+    t=ts*.001;ctx.clearRect(0,0,W,H);
+    ORBS.forEach(o=>{
+      const ox=(o.px+Math.sin(t*o.sp*5800)*.06)*W;
+      const oy=(o.py+Math.cos(t*o.sp*4600)*.055)*H;
+      const r=o.pr*Math.min(W,H);
+      const g=ctx.createRadialGradient(ox,oy,0,ox,oy,r);
+      g.addColorStop(0,`rgba(${o.rgb},.07)`);
+      g.addColorStop(.4,`rgba(${o.rgb},.024)`);
+      g.addColorStop(1,`rgba(${o.rgb},0)`);
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(ox,oy,r,0,Math.PI*2);ctx.fill();
+    });
+    const dr=(t*3.2)%56;ctx.lineWidth=.5;
+    for(let y=-56+dr;y<H+56;y+=56){const a=Math.max(.01,.036-Math.abs(y-H*.5)/(H/2+1)*.025);ctx.strokeStyle=`rgba(10,10,15,${a.toFixed(3)})`;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+    for(let x=0;x<W+56;x+=56){const a=Math.max(.01,.036-Math.abs(x-W*.5)/(W/2+1)*.025);ctx.strokeStyle=`rgba(10,10,15,${a.toFixed(3)})`;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+    syms.forEach(s=>{
+      s.y+=s.vy;if(s.y<-50)s.y=H+30;
+      const cm=.5+.5*Math.sin(t*.22+s.cp);
+      const ri=Math.round(10+218*cm),gi=Math.round(10+72*cm),bi=Math.round(15+27*cm);
+      const wb=Math.sin(t*.3+s.ph)*3.5;
+      const fe=Math.min(1,Math.min(s.y/70,(H-s.y)/70));
+      ctx.save();ctx.globalAlpha=s.op*Math.max(0,fe);
+      ctx.font=`italic ${s.sz}px 'Instrument Serif',serif`;
+      ctx.fillStyle=`rgb(${ri},${gi},${bi})`;
+      ctx.fillText(s.ch,s.x+wb,s.y);ctx.restore();
     });
     requestAnimationFrame(draw);
   }
-  resize();initBlobs();draw();
-  window.addEventListener('resize',()=>{resize();initBlobs()});
-  /* Mouse parallax */
-  window.addEventListener('mousemove',e=>{
-    const mx=e.clientX/W-0.5,my=e.clientY/H-0.5;
-    blobs.forEach((b,i)=>{
-      const strength=(i+1)*8;
-      b.x+=mx*strength*0.02;b.y+=my*strength*0.02;
-    });
-  },{passive:true});
+  resize();window.addEventListener('resize',resize);requestAnimationFrame(draw);
 })();
 
-/* ── SCROLL REVEAL ── */
-const observer=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}});
-},{threshold:0.12});
-document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+window.addEventListener('scroll',()=>{document.getElementById('main-nav').classList.toggle('scrolled',window.scrollY>40)},{passive:true});
 
-/* ── NAV SCROLL ── */
-window.addEventListener('scroll',()=>{
-  document.getElementById('main-nav').classList.toggle('scrolled',window.scrollY>40);
-},{passive:true});
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target)}})},{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>io.observe(el));
 
-/* ── FORM LOGIC ── */
-let current=1;
-const total=6;
-const required={1:['f-nom','f-email','f-projet','f-role'],2:['f-url','f-desc','f-probleme','f-clients'],3:['f-objectif','f-cta'],4:['f-defi'],5:[],6:[]};
+let cur=1;const TOTAL=6;
+const REQ={1:['f-nom','f-email','f-projet','f-role'],2:['f-url','f-desc','f-probleme','f-clients'],3:['f-objectif','f-cta'],4:['f-defi'],5:[],6:[]};
 
-function validate(step){
-  const fields=required[step]||[];let ok=true;
-  fields.forEach(id=>{
+function validate(s){
+  let ok=true;
+  (REQ[s]||[]).forEach(id=>{
     const el=document.getElementById(id);
-    if(!el||!el.value.trim()){el&&el.classList.add('err');ok=false}
+    if(!el||!el.value.trim()){if(el)el.classList.add('err');ok=false}
     else el.classList.remove('err');
   });
-  if(step===5&&document.querySelectorAll('.f-check.on').length===0){showToast("Sélectionnez au moins un axe d'analyse.");return false}
+  if(s===5&&!document.querySelector('.f-chk.on')){
+    showToast('Please select at least one analysis area.');
+    return false;
+  }
   if(!ok)showToast('Please fill in all required fields.');
   return ok;
 }
 
-function goTo(step){
-  if(step>current&&!validate(current))return;
-  document.getElementById('s'+current).classList.remove('active');
-  document.getElementById('dot-'+current).classList.remove('active');
-  document.getElementById('dot-'+current).classList.add('done');
-  current=step;
-  document.getElementById('s'+current).classList.add('active');
-  document.getElementById('dot-'+current).classList.remove('done');
-  document.getElementById('dot-'+current).classList.add('active');
-  document.getElementById('t-fill').style.width=Math.round(((current-1)/total)*100)+'%';
-  document.getElementById('t-pct').textContent='Step '+current+' of '+total;
+function goTo(s){
+  if(s>cur&&!validate(cur))return;
+  document.getElementById('s'+cur).classList.remove('on');
+  const od=document.getElementById('dot-'+cur);
+  od.classList.remove('on');od.classList.add('done');
+  cur=s;
+  document.getElementById('s'+cur).classList.add('on');
+  const nd=document.getElementById('dot-'+cur);
+  nd.classList.remove('done');nd.classList.add('on');
+  document.getElementById('t-fill').style.width=Math.round(((cur-1)/TOTAL)*100)+'%';
+  document.getElementById('t-pct').textContent='Step '+cur+' of '+TOTAL;
   document.getElementById('formulaire').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-function toggleCheck(el){el.classList.toggle('on')}
-
-const WEBHOOK='https://formsubmit.co/ajax/mmountagad1@gmail.com';
-
 async function submitForm(){
   if(!validate(6))return;
-  const btn=document.querySelector('.btn-submit');
+  const btn=document.querySelector('.btn-sub');
   btn.disabled=true;
-  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="animation:spin 1s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Sending…';
-  const auths=Array.from(document.querySelectorAll('.f-auth-item.on')).map(el=>el.querySelector('.f-auth-title').textContent);
-  const checks=Array.from(document.querySelectorAll('.f-check.on')).map(el=>el.querySelector('.f-check-label').textContent);
-  const payload={
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="animation:spin 1s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Sending…';
+  const auths=[...document.querySelectorAll('.f-auth-item.on')].map(e=>e.querySelector('.f-auth-title').textContent);
+  const checks=[...document.querySelectorAll('.f-chk.on')].map(e=>e.querySelector('.f-cl').textContent);
+  const p={
     nom:document.getElementById('f-nom').value.trim(),
     email:document.getElementById('f-email').value.trim(),
     projet:document.getElementById('f-projet').value.trim(),
@@ -1107,34 +778,40 @@ async function submitForm(){
     priorite:document.getElementById('f-priorite').value.trim(),
     axes:checks.join(', '),
     autorisations:auths.join(', '),
-    soumis_le:new Date().toLocaleString('en-GB')
+    soumis_le:new Date().toLocaleString('en-GB'),
+    lang:'en'
   };
   try{
-    await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)});
-  }catch(e){console.error(e)}
-  document.getElementById('s-projet').textContent=payload.projet;
-  document.getElementById('s-url').textContent=payload.url;
-  document.getElementById('s-email').textContent=payload.email;
+    await fetch('https://formsubmit.co/ajax/mmountagad1@gmail.com',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(p)
+    });
+  }catch(e){}
+  document.getElementById('s-projet').textContent=p.projet;
+  document.getElementById('s-url').textContent=p.url;
+  document.getElementById('s-email').textContent=p.email;
   document.getElementById('form-wrap').style.display='none';
-  document.querySelector('.t-progress').style.display='none';
-  document.getElementById('t-success').classList.add('show');
+  document.querySelector('.t-prog').style.display='none';
+  document.getElementById('t-ok').classList.add('show');
   document.getElementById('formulaire').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 function toggleFaq(el){
-  const item=el.parentElement;const isOpen=item.classList.contains('open');
+  const item=el.closest('.faq-item');
+  const was=item.classList.contains('open');
   document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
-  if(!isOpen)item.classList.add('open');
+  if(!was)item.classList.add('open');
 }
 
 function showToast(msg){
-  const t=document.getElementById('toast');t.textContent=msg;
-  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3200);
 }
 
-document.querySelectorAll('.f-input,.f-select,.f-textarea').forEach(el=>{
-  el.addEventListener('input',()=>el.classList.remove('err'));
-});
+document.querySelectorAll('.f-inp,.f-sel,.f-ta').forEach(el=>el.addEventListener('input',()=>el.classList.remove('err')));
 </script>
 </body>
 </html>
